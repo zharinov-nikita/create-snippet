@@ -1,39 +1,22 @@
 import fs from 'fs'
 import path from 'path'
+import chalk from 'chalk'
 import { UtilStringFormatter } from './utils'
 import { enumTemplateName, enumSuffixName, enumPrefixName } from './enums'
-import chalk from 'chalk'
 import { TypeConfig } from './types'
-
-const config: TypeConfig = [
-  {
-    template: 'ui',
-    files: [
-      '.cli/ui/template-name.component.ts',
-      '.cli/ui/template-name.test.ts',
-      '.cli/ui/template-name.type.ts',
-    ],
-  },
-  {
-    template: 'page',
-    files: [
-      '.cli/page/template-name.component.ts',
-      '.cli/page/template-name.test.ts',
-      '.cli/page/template-name.type.ts',
-    ],
-  },
-]
+import { config } from './config'
 
 class App {
-  findArg(name: string) {
+  findArg(name: string): string | undefined {
     const args = [...process.argv.slice(2)]
     const regexp = new RegExp(`--${name}`)
     const argName = args.find((item) => (regexp.test(item) ? item : undefined))
     if (argName) return argName.split('=')[1]
   }
 
-  create(setting: TypeConfig) {
+  create(setting: TypeConfig): void {
     try {
+      const argIsPreview = this.findArg('isPreview')
       const argTemplate = this.findArg('template')
       const argName = this.findArg('name')
       const argPrefix = this.findArg('prefix')
@@ -55,7 +38,7 @@ class App {
         const prefix = new UtilStringFormatter(argPrefix)
         const suffix = new UtilStringFormatter(argSuffix)
         const template = JSON.stringify(fs.readFileSync(file, 'utf-8'))
-        
+
         const data = template
           .replaceAll(enumTemplateName.camelCase, `${name.toCamelCase()}`)
           .replaceAll(enumTemplateName.pascalCase, `${name.toPascalCase()}`)
@@ -81,9 +64,18 @@ class App {
           .replace(enumTemplateName.lowerKebabCase, name.toLowerKebabCase())
         const createdPath = `${argPath}/${name.toLowerKebabCase()}`
 
+        if (fs.existsSync(`${createdPath}/${createdName}`)) throw new Error(argName)
+
+        
+        if (argIsPreview === 'true') {
+          console.log(`👀 ${chalk.blue(`Preview: ${chalk.bold(createdName)} file will be created`)}`)
+          return
+        }
+
+        
         fs.mkdirSync(createdPath, { recursive: true })
         fs.writeFileSync(`${createdPath}/${createdName}`, JSON.parse(data))
-        console.log(`✅ ${chalk.green(`Success: ${createdName} file created`)}`)
+        console.log(`✅ ${chalk.green(`Success: ${chalk.bold(createdName)} file created`)}`)
       })
     } catch (e) {
       console.log(chalk.red(e))
