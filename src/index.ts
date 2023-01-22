@@ -68,6 +68,7 @@ class App {
 
         
         if (argIsPreview === 'true') {
+          // eslint-disable-next-line no-console
           console.log(`👀 ${chalk.blue(`Preview: ${chalk.bold(createdName)} file will be created`)}`)
           return
         }
@@ -75,9 +76,11 @@ class App {
         
         fs.mkdirSync(createdPath, { recursive: true })
         fs.writeFileSync(`${createdPath}/${createdName}`, JSON.parse(data))
+        // eslint-disable-next-line no-console
         console.log(`✅ ${chalk.green(`Success: ${chalk.bold(createdName)} file created`)}`)
       })
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(chalk.red(e))
     }
   }

@@ -1,1 +1,1 @@
-export * from './string-formatter.util'
+export * from './string-formatter'
