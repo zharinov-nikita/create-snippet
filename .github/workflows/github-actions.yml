@@ -17,4 +17,4 @@ jobs:
       - name: install modules    
         run: npm install
       - name: testing    
-        run: npm run test
+        run: npm run pre-test
