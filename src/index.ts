@@ -66,14 +66,12 @@ class App {
 
         if (fs.existsSync(`${createdPath}/${createdName}`)) throw new Error(argName)
 
-        
         if (argIsPreview === 'true') {
           // eslint-disable-next-line no-console
           console.log(`👀 ${chalk.blue(`Preview: ${chalk.bold(createdName)} file will be created`)}`)
           return
         }
 
-        
         fs.mkdirSync(createdPath, { recursive: true })
         fs.writeFileSync(`${createdPath}/${createdName}`, JSON.parse(data))
         // eslint-disable-next-line no-console
