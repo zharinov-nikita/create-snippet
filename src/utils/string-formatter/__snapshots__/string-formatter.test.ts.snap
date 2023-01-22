@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`util/string-formatter snapshot: HELLO_WORLD 1`] = `"HELLO_WORLD"`;
+
+exports[`util/string-formatter snapshot: HELLO-WORLD 1`] = `"HELLO-WORLD"`;
+
+exports[`util/string-formatter snapshot: HelloWorld 1`] = `"HelloWorld"`;
+
+exports[`util/string-formatter snapshot: hello_world 1`] = `"hello_world"`;
+
+exports[`util/string-formatter snapshot: hello-world 1`] = `"hello-world"`;
+
+exports[`util/string-formatter snapshot: helloWorld 1`] = `"helloWorld"`;
