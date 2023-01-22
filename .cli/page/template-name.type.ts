@@ -1,4 +1,4 @@
-const templateName = () => [
+const TemplateName = () => [
   'templateName',
   'TemplateName',
   'template_name',

@@ -1,6 +1,6 @@
 interface ConfigItem {
   template: string
-  files: string[]
+  files: string
 }
 
 export type TypeConfig = ConfigItem[]

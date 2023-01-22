@@ -1,81 +1,76 @@
+import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
-import chalk from 'chalk'
-import { UtilStringFormatter } from './utils'
-import { enumTemplateName, enumSuffixName, enumPrefixName } from './enums'
-import { TypeConfig } from './types'
+import recursive from 'recursive-readdir'
 import { config } from './config'
+import { enumTemplateName } from './enums'
+import type { TypeConfig } from './types'
+import { UtilStringFormatter } from './utils'
 
 class App {
-  findArg(name: string): string | undefined {
+  private readonly argTemplate: string
+  private readonly argName: string
+  private readonly argPath: string
+  private readonly argIsPreview: string
+
+  constructor() {
+    this.argTemplate = this.findArg('template')
+    this.argName = this.findArg('name')
+    this.argPath = this.findArg('path')
+    this.argIsPreview = this.findArg('isPreview')
+  }
+
+  private findArg(name: string): string {
     const args = [...process.argv.slice(2)]
     const regexp = new RegExp(`--${name}`)
     const argName = args.find((item) => (regexp.test(item) ? item : undefined))
-    if (argName) return argName.split('=')[1]
+    return argName ? argName.split('=')[1] : ''
+  }
+
+  private replaceAll(template: string): string {
+    const name = new UtilStringFormatter(this.argName)
+
+    return template
+      .replaceAll(enumTemplateName.camelCase, `${name.toCamelCase()}`)
+      .replaceAll(enumTemplateName.pascalCase, `${name.toPascalCase()}`)
+      .replaceAll(enumTemplateName.lowerSnakeCase, `${name.toLowerSnakeCase()}`)
+      .replaceAll(enumTemplateName.upperSnakeCase, `${name.toUpperSnakeCase()}`)
+      .replaceAll(enumTemplateName.lowerKebabCase, `${name.toLowerKebabCase()}`)
+      .replaceAll(enumTemplateName.upperKebabCase, `${name.toUpperKebabCase()}`)
   }
 
   create(setting: TypeConfig): void {
     try {
-      const argIsPreview = this.findArg('isPreview')
-      const argTemplate = this.findArg('template')
-      const argName = this.findArg('name')
-      const argPrefix = this.findArg('prefix')
-      const argSuffix = this.findArg('suffix')
-      const argPath = this.findArg('path')
-
-      if (!argTemplate) throw new Error('argTemplate')
-      if (!argName) throw new Error('argName')
-      if (!argPath) throw new Error('argPath')
-      if (!argPrefix) throw new Error('argPrefix')
-      if (!argSuffix) throw new Error('argSuffix')
-
-      const config = setting.find((item) => item.template === argTemplate)
+      const config = setting.find((item) => item.template === this.argTemplate)
 
       if (!config) throw new Error('config')
 
-      config.files.forEach((file) => {
-        const name = new UtilStringFormatter(argName)
-        const prefix = new UtilStringFormatter(argPrefix)
-        const suffix = new UtilStringFormatter(argSuffix)
-        const template = JSON.stringify(fs.readFileSync(file, 'utf-8'))
+      recursive(config.files, (error, files) => {
+        if (error) throw new Error(error.message)
 
-        const data = template
-          .replaceAll(enumTemplateName.camelCase, `${name.toCamelCase()}`)
-          .replaceAll(enumTemplateName.pascalCase, `${name.toPascalCase()}`)
-          .replaceAll(enumTemplateName.lowerSnakeCase, `${name.toLowerSnakeCase()}`)
-          .replaceAll(enumTemplateName.upperSnakeCase, `${name.toUpperSnakeCase()}`)
-          .replaceAll(enumTemplateName.lowerKebabCase, `${name.toLowerKebabCase()}`)
-          .replaceAll(enumTemplateName.upperKebabCase, `${name.toUpperKebabCase()}`)
-          .replaceAll(enumPrefixName.camelCase, `${prefix.toCamelCase()}`)
-          .replaceAll(enumPrefixName.pascalCase, `${prefix.toPascalCase()}`)
-          .replaceAll(enumPrefixName.lowerSnakeCase, `${prefix.toLowerSnakeCase()}`)
-          .replaceAll(enumPrefixName.upperSnakeCase, `${prefix.toUpperSnakeCase()}`)
-          .replaceAll(enumPrefixName.lowerKebabCase, `${prefix.toLowerKebabCase()}`)
-          .replaceAll(enumPrefixName.upperKebabCase, `${prefix.toUpperKebabCase()}`)
-          .replaceAll(enumSuffixName.camelCase, `${suffix.toCamelCase()}`)
-          .replaceAll(enumSuffixName.pascalCase, `${suffix.toPascalCase()}`)
-          .replaceAll(enumSuffixName.lowerSnakeCase, `${suffix.toLowerSnakeCase()}`)
-          .replaceAll(enumSuffixName.upperSnakeCase, `${suffix.toUpperSnakeCase()}`)
-          .replaceAll(enumSuffixName.lowerKebabCase, `${suffix.toLowerKebabCase()}`)
-          .replaceAll(enumSuffixName.upperKebabCase, `${suffix.toUpperKebabCase()}`)
+        files.forEach((file) => {
+          const template = JSON.stringify(fs.readFileSync(file, 'utf-8'))
+          const data = this.replaceAll(template)
 
-        const createdName = path
-          .basename(file)
-          .replace(enumTemplateName.lowerKebabCase, name.toLowerKebabCase())
-        const createdPath = `${argPath}/${name.toLowerKebabCase()}`
+          const fileName = path.basename(file)
+          const mkdirPath = path.dirname(file).replace(path.join(config.files), path.join(this.argPath))
+          const writeFilePath = path.join(file).replace(path.join(config.files), path.join(this.argPath))
 
-        if (fs.existsSync(`${createdPath}/${createdName}`)) throw new Error(argName)
+          if (fs.existsSync(writeFilePath)) throw new Error(this.argName)
 
-        if (argIsPreview === 'true') {
+          if (this.argIsPreview === 'true') {
+            // eslint-disable-next-line no-console
+            console.log(
+              `👀 ${chalk.blue(`Preview: file ${chalk.bold(fileName)} will be created ${mkdirPath}`)}`
+            )
+            return
+          }
+
+          fs.mkdirSync(mkdirPath, { recursive: true })
+          fs.writeFileSync(writeFilePath, JSON.parse(data))
           // eslint-disable-next-line no-console
-          console.log(`👀 ${chalk.blue(`Preview: ${chalk.bold(createdName)} file will be created`)}`)
-          return
-        }
-
-        fs.mkdirSync(createdPath, { recursive: true })
-        fs.writeFileSync(`${createdPath}/${createdName}`, JSON.parse(data))
-        // eslint-disable-next-line no-console
-        console.log(`✅ ${chalk.green(`Success: ${chalk.bold(createdName)} file created`)}`)
+          console.log(`✅ ${chalk.green(`Success: file ${chalk.bold(fileName)} created ${mkdirPath}`)}`)
+        })
       })
     } catch (e) {
       // eslint-disable-next-line no-console
