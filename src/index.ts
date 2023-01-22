@@ -12,12 +12,14 @@ class App {
   private readonly argName: string
   private readonly argPath: string
   private readonly argIsPreview: string
+  private readonly stringFormatter: UtilStringFormatter
 
   constructor() {
     this.argTemplate = this.findArg('template')
     this.argName = this.findArg('name')
     this.argPath = this.findArg('path')
     this.argIsPreview = this.findArg('isPreview')
+    this.stringFormatter = new UtilStringFormatter()
   }
 
   private findArg(name: string): string {
@@ -28,22 +30,23 @@ class App {
   }
 
   private replaceAll(template: string): string {
-    const name = new UtilStringFormatter(this.argName)
-
     return template
-      .replaceAll(enumTemplateName.camelCase, `${name.toCamelCase()}`)
-      .replaceAll(enumTemplateName.pascalCase, `${name.toPascalCase()}`)
-      .replaceAll(enumTemplateName.lowerSnakeCase, `${name.toLowerSnakeCase()}`)
-      .replaceAll(enumTemplateName.upperSnakeCase, `${name.toUpperSnakeCase()}`)
-      .replaceAll(enumTemplateName.lowerKebabCase, `${name.toLowerKebabCase()}`)
-      .replaceAll(enumTemplateName.upperKebabCase, `${name.toUpperKebabCase()}`)
+      .replaceAll(enumTemplateName.camelCase, `${this.stringFormatter.toCamelCase(this.argName)}`)
+      .replaceAll(enumTemplateName.pascalCase, `${this.stringFormatter.toPascalCase(this.argName)}`)
+      .replaceAll(enumTemplateName.lowerSnakeCase, `${this.stringFormatter.toLowerSnakeCase(this.argName)}`)
+      .replaceAll(enumTemplateName.upperSnakeCase, `${this.stringFormatter.toUpperSnakeCase(this.argName)}`)
+      .replaceAll(enumTemplateName.lowerKebabCase, `${this.stringFormatter.toLowerKebabCase(this.argName)}`)
+      .replaceAll(enumTemplateName.upperKebabCase, `${this.stringFormatter.toUpperKebabCase(this.argName)}`)
   }
 
-  create(setting: TypeConfig): void {
+  start(setting: TypeConfig): void {
     try {
       const config = setting.find((item) => item.template === this.argTemplate)
-
       if (!config) throw new Error('config')
+
+      if (this.argName === '') throw new Error(`specify the required argument --name=example`)
+      if (this.argPath === '') throw new Error(`specify the required argument --path=example`)
+      if (this.argTemplate === '') throw new Error(`specify the required argument --template=example`)
 
       recursive(config.files, (error, files) => {
         if (error) throw new Error(error.message)
@@ -61,7 +64,9 @@ class App {
           if (this.argIsPreview === 'true') {
             // eslint-disable-next-line no-console
             console.log(
-              `👀 ${chalk.blue(`Preview: file ${chalk.bold(fileName)} will be created ${mkdirPath}`)}`
+              `👀 ${chalk.blue(
+                `Preview: ${chalk.bold(fileName)} will be created by the path ${chalk.bold(mkdirPath)}`
+              )}`
             )
             return
           }
@@ -69,7 +74,11 @@ class App {
           fs.mkdirSync(mkdirPath, { recursive: true })
           fs.writeFileSync(writeFilePath, JSON.parse(data))
           // eslint-disable-next-line no-console
-          console.log(`✅ ${chalk.green(`Success: file ${chalk.bold(fileName)} created ${mkdirPath}`)}`)
+          console.log(
+            `✅ ${chalk.green(
+              `Success: ${chalk.bold(fileName)} created by the path ${chalk.bold(mkdirPath)}`
+            )}`
+          )
         })
       })
     } catch (e) {
@@ -80,4 +89,4 @@ class App {
 }
 
 const app = new App()
-app.create(config)
+app.start(config)

@@ -1,12 +1,6 @@
 export class UtilStringFormatter {
-  value: string
-
-  constructor(stringInKebabCase: string) {
-    this.value = stringInKebabCase
-  }
-
-  toCamelCase(): string {
-    const array = this.value.split('-')
+  toCamelCase(stringInKebabCase: string): string {
+    const array = stringInKebabCase.split('-')
     const firstWord = array[0]
     const otherWord = array.map((item, index) => {
       if (index > 0) {
@@ -17,28 +11,28 @@ export class UtilStringFormatter {
     return `${firstWord}${otherWord.join('')}`
   }
 
-  toUpperSnakeCase(): string {
-    const array = this.value.split('-')
+  toUpperSnakeCase(stringInKebabCase: string): string {
+    const array = stringInKebabCase.split('-')
     const string = array.map((item) => item.toUpperCase())
     return string.join('_')
   }
 
-  toLowerSnakeCase(): string {
-    const array = this.value.split('-')
+  toLowerSnakeCase(stringInKebabCase: string): string {
+    const array = stringInKebabCase.split('-')
     const string = array.map((item) => item.toLowerCase())
     return string.join('_')
   }
 
-  toUpperKebabCase(): string {
-    return this.value.toUpperCase()
+  toUpperKebabCase(stringInKebabCase: string): string {
+    return stringInKebabCase.toUpperCase()
   }
 
-  toLowerKebabCase(): string {
-    return this.value.toLowerCase()
+  toLowerKebabCase(stringInKebabCase: string): string {
+    return stringInKebabCase.toLowerCase()
   }
 
-  toPascalCase(): string {
-    const array = this.value.split('-')
+  toPascalCase(stringInKebabCase: string): string {
+    const array = stringInKebabCase.split('-')
     const firstWord = `${array[0][0].toUpperCase()}${array[0].substring(1)}`
     const otherWord = array.map((item, index) => {
       if (index > 0) {
