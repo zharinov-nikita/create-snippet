@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
@@ -7,7 +8,7 @@ import { enumTemplateName } from './enums'
 import type { TypeConfig } from './types'
 import { UtilStringFormatter } from './utils'
 
-class App {
+export class App {
   private readonly argTemplate: string
   private readonly argName: string
   private readonly argPath: string
@@ -55,9 +56,12 @@ class App {
           const template = JSON.stringify(fs.readFileSync(file, 'utf-8'))
           const data = this.replaceAll(template)
 
-          const fileName = path.basename(file)
+          const fileName = path.basename(file).replaceAll(enumTemplateName.lowerKebabCase, this.argName)
           const mkdirPath = path.dirname(file).replace(path.join(config.files), path.join(this.argPath))
-          const writeFilePath = path.join(file).replace(path.join(config.files), path.join(this.argPath))
+          const writeFilePath = path
+            .join(file)
+            .replaceAll(path.join(config.files), path.join(this.argPath))
+            .replaceAll(enumTemplateName.lowerKebabCase, this.argName)
 
           if (fs.existsSync(writeFilePath)) throw new Error(this.argName)
 
