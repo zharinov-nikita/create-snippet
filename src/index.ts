@@ -58,7 +58,10 @@ export class App {
 
           const fileName = path.basename(file).replaceAll(enumTemplateName.lowerKebabCase, this.argName)
           const mkdirPath = path.dirname(file).replace(path.join(config.files), path.join(this.argPath))
-          const writeFilePath = path.join(file).replace(path.join(config.files), path.join(this.argPath))
+          const writeFilePath = path
+            .join(file)
+            .replaceAll(path.join(config.files), path.join(this.argPath))
+            .replaceAll(enumTemplateName.lowerKebabCase, this.argName)
 
           if (fs.existsSync(writeFilePath)) throw new Error(this.argName)
 
