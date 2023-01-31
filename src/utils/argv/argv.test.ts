@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals'
 import { UtilArgv } from './argv.util'
 
-describe('util/string-formatter', () => {
+describe('util/argv', () => {
   const argv: string[] = ['--make=ford', '--mode=mustang', '--year=1879']
   process.argv.push(...argv)
   const util = new UtilArgv()
