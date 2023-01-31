@@ -1,4 +1,8 @@
 {
+  "name": "cli-test",
+  "bin": {
+    "cli-test": "./dist/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "lint": "npx eslint --color ./src",
