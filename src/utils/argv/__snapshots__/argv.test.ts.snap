@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`util/string-formatter snapshot 1`] = `""`;
+
+exports[`util/string-formatter snapshot: 1879 1`] = `"1879"`;
+
+exports[`util/string-formatter snapshot: ford 1`] = `"ford"`;
+
+exports[`util/string-formatter snapshot: mustang 1`] = `"mustang"`;

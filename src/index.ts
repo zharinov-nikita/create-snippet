@@ -6,7 +6,7 @@ import recursive from 'recursive-readdir'
 import { config } from './config'
 import { enumTemplateName } from './enums'
 import type { TypeConfig } from './types'
-import { UtilStringFormatter } from './utils'
+import { UtilArgv, UtilStringFormatter } from './utils'
 
 export class App {
   private readonly argTemplate: string
@@ -14,20 +14,15 @@ export class App {
   private readonly argPath: string
   private readonly argIsPreview: string
   private readonly stringFormatter: UtilStringFormatter
+  private readonly argv: UtilArgv
 
   constructor() {
-    this.argTemplate = this.findArg('template')
-    this.argName = this.findArg('name')
-    this.argPath = this.findArg('path')
-    this.argIsPreview = this.findArg('isPreview')
     this.stringFormatter = new UtilStringFormatter()
-  }
-
-  private findArg(name: string): string {
-    const args = [...process.argv.slice(2)]
-    const regexp = new RegExp(`--${name}`)
-    const argName = args.find((item) => (regexp.test(item) ? item : undefined))
-    return argName ? argName.split('=')[1] : ''
+    this.argv = new UtilArgv()
+    this.argTemplate = this.argv.find('template')
+    this.argName = this.argv.find('name')
+    this.argPath = this.argv.find('path')
+    this.argIsPreview = this.argv.find('isPreview')
   }
 
   private replaceAll(template: string): string {
