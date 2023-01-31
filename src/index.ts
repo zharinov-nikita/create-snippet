@@ -3,7 +3,6 @@ import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
 import recursive from 'recursive-readdir'
-import { config } from './config'
 import { enumTemplateName } from './enums'
 import type { TypeConfig } from './types'
 import { UtilArgv, UtilStringFormatter } from './utils'
@@ -15,6 +14,7 @@ export class App {
   private readonly argIsPreview: string
   private readonly stringFormatter: UtilStringFormatter
   private readonly argv: UtilArgv
+  private readonly config: TypeConfig
 
   constructor() {
     this.stringFormatter = new UtilStringFormatter()
@@ -23,6 +23,7 @@ export class App {
     this.argName = this.argv.find('name')
     this.argPath = this.argv.find('path')
     this.argIsPreview = this.argv.find('isPreview')
+    this.config = JSON.parse(fs.readFileSync(path.join('cli.json'), 'utf8')) as TypeConfig
   }
 
   private replaceAll(template: string): string {
@@ -35,9 +36,9 @@ export class App {
       .replaceAll(enumTemplateName.upperKebabCase, `${this.stringFormatter.toUpperKebabCase(this.argName)}`)
   }
 
-  start(setting: TypeConfig): void {
+  public start(): void {
     try {
-      const config = setting.find((item) => item.template === this.argTemplate)
+      const config = this.config.find((item) => item.template === this.argTemplate)
       if (!config) throw new Error('config')
 
       if (this.argName === '') throw new Error(`specify the required argument --name=example`)
@@ -52,11 +53,16 @@ export class App {
           const data = this.replaceAll(template)
 
           const fileName = path.basename(file).replaceAll(enumTemplateName.lowerKebabCase, this.argName)
-          const mkdirPath = path.dirname(file).replace(path.join(config.files), path.join(this.argPath))
-          const writeFilePath = path
-            .join(file)
-            .replaceAll(path.join(config.files), path.join(this.argPath))
-            .replaceAll(enumTemplateName.lowerKebabCase, this.argName)
+          const mkdirPath = path.join(
+            ...[
+              path
+                .dirname(file)
+                .replaceAll(path.join(config.files), path.join(...[this.argPath, this.argName])),
+            ]
+          )
+          const writeFilePath = path.join(
+            ...[mkdirPath, path.basename(file).replaceAll(enumTemplateName.lowerKebabCase, this.argName)]
+          )
 
           if (fs.existsSync(writeFilePath)) throw new Error(this.argName)
 
@@ -88,4 +94,4 @@ export class App {
 }
 
 const app = new App()
-app.start(config)
+app.start()
