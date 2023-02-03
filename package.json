@@ -1,8 +1,19 @@
 {
   "name": "code-snippet",
+  "description": "npx tool for generating code snippets",
+  "main": "./dist/index.js",
+  "version": "1.0.0",
   "bin": {
-    "cli": "./dist/index.js"
+    "code-snippet": "./dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zharinov-nikita/code-snippet.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zharinov-nikita/code-snippet/issues"
+  },
+  "homepage": "https://github.com/zharinov-nikita/code-snippet#readme",
   "scripts": {
     "build": "tsc",
     "lint": "npx eslint --color ./src",
