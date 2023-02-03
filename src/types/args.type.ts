@@ -1,6 +1,5 @@
 export interface TypeArgs {
-  template: string
+  snippet: string
   name: string
   path: string
-  isPreview: boolean
 }

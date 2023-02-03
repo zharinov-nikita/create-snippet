@@ -15,14 +15,13 @@ export class UtilPrompt {
     return [
       {
         type: 'select',
-        name: 'template',
-        message: 'Pick a template',
-        choices: this.config.generate().map(({ template }) => ({ title: template, value: template })),
+        name: 'snippet',
+        message: 'Pick a snippet',
+        choices: this.config.generate().map(({ snippet }) => ({ title: snippet, value: snippet })),
         initial: 0,
       },
       { type: 'text', name: 'name', message: 'Pick a name' },
       { type: 'text', name: 'path', message: 'Pick a path' },
-      { type: 'toggle', name: 'isPreview', message: 'Pick isPreview' },
     ]
   }
 

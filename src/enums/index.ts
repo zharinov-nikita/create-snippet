@@ -1,1 +1,1 @@
-export * from './template-name.enum'
+export * from './snippet-name.enum'

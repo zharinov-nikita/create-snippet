@@ -1,5 +1,5 @@
 interface ConfigItem {
-  template: string
+  snippet: string
   files: string
 }
 

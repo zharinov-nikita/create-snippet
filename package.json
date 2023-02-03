@@ -1,5 +1,5 @@
 {
-  "name": "cli",
+  "name": "code-snippet",
   "bin": {
     "cli": "./dist/index.js"
   },
