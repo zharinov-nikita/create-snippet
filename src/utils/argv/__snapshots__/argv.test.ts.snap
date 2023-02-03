@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`util/argv snapshot: 1879 1`] = `"1879"`;
+
+exports[`util/argv snapshot: ford 1`] = `"ford"`;
+
+exports[`util/argv snapshot: mustang 1`] = `"mustang"`;

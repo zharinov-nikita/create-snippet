@@ -1,0 +1,94 @@
+{
+    "root": true,
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": [
+            "./tsconfig.json"
+        ]
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "no-useless-escape": "off",
+        "no-console": "error"
+    },
+    "overrides": [
+        {
+            "files": [
+                "./src/enums/**/*.enum.ts"
+            ],
+            "rules": {
+                "@typescript-eslint/naming-convention": [
+                    "error",
+                    {
+                        "selector": [
+                            "enum"
+                        ],
+                        "format": [
+                            "PascalCase"
+                        ],
+                        "modifiers": [
+                            "exported"
+                        ],
+                        "prefix": [
+                            "enum"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "files": [
+                "./src/types/**/*.type.ts"
+            ],
+            "rules": {
+                "@typescript-eslint/naming-convention": [
+                    "error",
+                    {
+                        "selector": [
+                            "typeAlias", "interface"
+                        ],
+                        "format": [
+                            "PascalCase"
+                        ],
+                        "modifiers": [
+                            "exported"
+                        ],
+                        "prefix": [
+                            "Type"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "files": [
+                "./src/utils/**/*.util.ts"
+            ],
+            "rules": {
+                "@typescript-eslint/naming-convention": [
+                    "error",
+                    {
+                        "selector": [
+                            "class", "interface"
+                        ],
+                        "format": [
+                            "PascalCase"
+                        ],
+                        "modifiers": [
+                            "exported"
+                        ],
+                        "prefix": [
+                            "Util"
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
