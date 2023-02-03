@@ -5,20 +5,22 @@ import path from 'path'
 import recursive from 'recursive-readdir'
 import { enumTemplateName } from './enums'
 import type { TypeConfig } from './types'
-import { UtilArgv, UtilStringFormatter } from './utils'
+import { UtilArgv, UtilPrompt, UtilStringFormatter } from './utils'
 
-export class App {
-  private readonly argTemplate: string
-  private readonly argName: string
-  private readonly argPath: string
+export class Cli {
+  private argTemplate: string
+  private argName: string
+  private argPath: string
   private readonly argIsPreview: string
   private readonly stringFormatter: UtilStringFormatter
   private readonly argv: UtilArgv
   private readonly config: TypeConfig
+  private readonly prompt: UtilPrompt
 
   constructor() {
     this.stringFormatter = new UtilStringFormatter()
     this.argv = new UtilArgv()
+    this.prompt = new UtilPrompt()
     this.argTemplate = this.argv.find('template')
     this.argName = this.argv.find('name')
     this.argPath = this.argv.find('path')
@@ -36,8 +38,12 @@ export class App {
       .replaceAll(enumTemplateName.upperKebabCase, `${this.stringFormatter.toUpperKebabCase(this.argName)}`)
   }
 
-  public start(): void {
+  public async start(): Promise<void> {
     try {
+      const data = await this.prompt.getConfig()
+      this.argName = data.name
+      this.argPath = data.path
+      this.argTemplate = data.template
       const config = this.config.find((item) => item.template === this.argTemplate)
       if (!config) throw new Error('config')
 
@@ -93,5 +99,5 @@ export class App {
   }
 }
 
-const app = new App()
+const app = new Cli()
 app.start()
