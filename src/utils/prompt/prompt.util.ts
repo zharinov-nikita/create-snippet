@@ -1,25 +1,33 @@
 import { prompt, PromptObject } from 'prompts'
+import type { TypeArgs } from '../../types'
+import { UtilConfig } from '../config'
 
-interface Config {
-  template: string
-  name: string
-  path: string
-  isPreview: boolean
-}
+type Question = PromptObject[]
 
 export class UtilPrompt {
-  private question: PromptObject[]
+  private config: UtilConfig
 
   constructor() {
-    this.question = [
-      { type: 'text', name: 'template', message: 'Pick a template' },
+    this.config = new UtilConfig()
+  }
+
+  private createQuestion(): Question {
+    return [
+      {
+        type: 'select',
+        name: 'template',
+        message: 'Pick a template',
+        choices: this.config.generate().map(({ template }) => ({ title: template, value: template })),
+        initial: 0,
+      },
       { type: 'text', name: 'name', message: 'Pick a name' },
       { type: 'text', name: 'path', message: 'Pick a path' },
       { type: 'toggle', name: 'isPreview', message: 'Pick isPreview' },
     ]
   }
 
-  async getConfig(): Promise<Config> {
-    return await prompt(this.question)
+  public async getArgs(): Promise<TypeArgs> {
+    const question = this.createQuestion()
+    return await prompt(question)
   }
 }
