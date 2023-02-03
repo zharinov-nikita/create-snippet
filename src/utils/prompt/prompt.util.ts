@@ -4,6 +4,7 @@ interface Config {
   template: string
   name: string
   path: string
+  isPreview: boolean
 }
 
 export class UtilPrompt {
@@ -14,6 +15,7 @@ export class UtilPrompt {
       { type: 'text', name: 'template', message: 'Pick a template' },
       { type: 'text', name: 'name', message: 'Pick a name' },
       { type: 'text', name: 'path', message: 'Pick a path' },
+      { type: 'toggle', name: 'isPreview', message: 'Pick isPreview' },
     ]
   }
 

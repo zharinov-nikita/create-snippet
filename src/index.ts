@@ -11,7 +11,7 @@ export class Cli {
   private argTemplate: string
   private argName: string
   private argPath: string
-  private readonly argIsPreview: string
+  private argIsPreview: boolean
   private readonly stringFormatter: UtilStringFormatter
   private readonly argv: UtilArgv
   private readonly config: TypeConfig
@@ -24,7 +24,7 @@ export class Cli {
     this.argTemplate = this.argv.find('template')
     this.argName = this.argv.find('name')
     this.argPath = this.argv.find('path')
-    this.argIsPreview = this.argv.find('isPreview')
+    this.argIsPreview = false
     this.config = JSON.parse(fs.readFileSync(path.join('cli.json'), 'utf8')) as TypeConfig
   }
 
@@ -44,6 +44,7 @@ export class Cli {
       this.argName = data.name
       this.argPath = data.path
       this.argTemplate = data.template
+      this.argIsPreview = data.isPreview
       const config = this.config.find((item) => item.template === this.argTemplate)
       if (!config) throw new Error('config')
 
@@ -72,7 +73,7 @@ export class Cli {
 
           if (fs.existsSync(writeFilePath)) throw new Error(this.argName)
 
-          if (this.argIsPreview === 'true') {
+          if (this.argIsPreview) {
             // eslint-disable-next-line no-console
             console.log(
               `👀 ${chalk.blue(
