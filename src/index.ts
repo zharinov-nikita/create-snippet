@@ -5,7 +5,7 @@ import path from 'path'
 import recursive from 'recursive-readdir'
 import { enumTemplateName } from './enums'
 import type { TypeConfig } from './types'
-import { UtilArgv, UtilPrompt, UtilStringFormatter } from './utils'
+import { UtilArgv, UtilConfig, UtilPrompt, UtilStringFormatter } from './utils'
 
 export class Cli {
   private argTemplate: string
@@ -24,8 +24,8 @@ export class Cli {
     this.argTemplate = this.argv.find('template')
     this.argName = this.argv.find('name')
     this.argPath = this.argv.find('path')
-    this.argIsPreview = false
-    this.config = JSON.parse(fs.readFileSync(path.join('cli.json'), 'utf8')) as TypeConfig
+    this.argIsPreview = Boolean(this.argv.find('isPreview'))
+    this.config = new UtilConfig().generate()
   }
 
   private replaceAll(template: string): string {
