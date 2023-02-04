@@ -1,4 +1,4 @@
-#### Installation
+#### Installation ([watch video](https://youtu.be/U77RNYuk1LA))
 
 To install the `create-snippet` package, run the command:
 
@@ -8,13 +8,11 @@ npm i -D create-snippet
 
 Setup
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/U77RNYuk1LA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 1. In the root of your project, create a directory `.create-snippet`
 2. In the `.create-snippet` directory, create a subdirectory with an arbitrary name in the `kebab-case` format (for example, my-snippet)
 3. Next, in the created subdirectory, create files of any format
 
-```ts
+```
 //example
 📁.create-snippet/
 └── 📁my-snippet-1/
