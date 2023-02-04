@@ -1,6 +1,14 @@
 {
   "name": "create-snippet",
   "description": "npx tool for generating code snippets",
+  "keywords": [
+    "snippet",
+    "code-snippet",
+    "create-snippet",
+    "create-code-snippet",
+    "automating-code-creation",
+    "code-generation"
+  ],
   "main": "./dist/index.js",
   "version": "1.1.0",
   "bin": {
