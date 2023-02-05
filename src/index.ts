@@ -1,16 +1,9 @@
 #!/usr/bin/env node
 import chalk from 'chalk'
 import fs from 'fs'
-import path from 'path'
 import recursiveReaddir from 'recursive-readdir'
-import { enumSnippetName } from './enums'
-import type { TypeArgs, TypeConfig, TypeConfigItem } from './types'
-import { UtilConfig, UtilPrompt, UtilSnippet } from './utils'
-
-interface TypeGeneratePathOptions {
-  pathToSnippet: string
-  config: TypeConfigItem
-}
+import type { TypeArgs, TypeConfig } from './types'
+import { UtilConfig, UtilPath, UtilPrompt, UtilSnippet } from './utils'
 
 interface TypeGeneratePath {
   fileName: string
@@ -26,12 +19,14 @@ export class CodeSnippet {
   private readonly snippet: UtilSnippet
   private readonly config: TypeConfig
   private readonly prompt: UtilPrompt
+  private readonly path: UtilPath
   private args: TypeArgs
 
   constructor() {
     this.snippet = new UtilSnippet()
     this.prompt = new UtilPrompt()
     this.config = new UtilConfig().generate()
+    this.path = new UtilPath()
     this.args = {
       snippet: '',
       name: '',
@@ -39,29 +34,9 @@ export class CodeSnippet {
     }
   }
 
-  private generatePath(options: TypeGeneratePathOptions): TypeGeneratePath {
-    const fileName = path
-      .basename(options.pathToSnippet)
-      .replaceAll(enumSnippetName.lowerKebabCase, this.args.name)
-    const mkdirPath = path.join(
-      ...[
-        path
-          .dirname(options.pathToSnippet)
-          .replaceAll(path.join(options.config.files), path.join(...[this.args.path, this.args.name])),
-      ]
-    )
-    const writeFilePath = path.join(
-      ...[
-        mkdirPath,
-        path.basename(options.pathToSnippet).replaceAll(enumSnippetName.lowerKebabCase, this.args.name),
-      ]
-    )
-
-    return { fileName, mkdirPath, writeFilePath }
-  }
-
   private generateUnformattedSnippet(pathToSnippet: string): string {
-    return JSON.stringify(fs.readFileSync(pathToSnippet, 'utf-8'))
+    const unformattedSnippet = fs.readFileSync(pathToSnippet, 'utf-8')
+    return JSON.stringify(unformattedSnippet)
   }
 
   private generateFormattedSnippet(unformattedSnippet: string) {
@@ -94,7 +69,12 @@ export class CodeSnippet {
         paths.forEach((pathToSnippet) => {
           const unformattedSnippet = this.generateUnformattedSnippet(pathToSnippet)
           const formattedSnippet = this.generateFormattedSnippet(unformattedSnippet)
-          const { fileName, mkdirPath, writeFilePath } = this.generatePath({ pathToSnippet, config })
+          const { fileName, mkdirPath, writeFilePath } = this.path.generate({
+            pathToSnippet,
+            config,
+            name: this.args.name,
+            path: this.args.path,
+          })
           if (fs.existsSync(writeFilePath)) throw new Error(this.args.name)
           this.createSnippet({ fileName, formattedSnippet, mkdirPath, writeFilePath })
         })
