@@ -26,6 +26,7 @@ export class CodeSnippet {
       snippet: '',
       name: '',
       path: '',
+      isFlat: false,
     }
   }
 
@@ -40,8 +41,10 @@ export class CodeSnippet {
   }
 
   private createSnippet(options: TypeCreateSnippetOptions): void {
-    fs.mkdirSync(options.pathSnippetFile, { recursive: true })
-    fs.writeFileSync(options.pathWriteSnippetFile, options.formattedSnippet)
+    const mkdir = this.args.isFlat ? options.pathFlatSnippetFile : options.pathSnippetFile
+    const writeFile = this.args.isFlat ? options.pathFlatWriteSnippetFile : options.pathWriteSnippetFile
+    fs.mkdirSync(mkdir, { recursive: true })
+    fs.writeFileSync(writeFile, options.formattedSnippet)
     // eslint-disable-next-line no-console
     console.log(`${chalk.green(`√`)} ${chalk.gray(`${options.pathSnippetFile}`)}`)
   }

@@ -22,6 +22,14 @@ export class UtilPrompt {
       },
       { type: 'text', name: 'name', message: 'Pick a name' },
       { type: 'text', name: 'path', message: 'Pick a path' },
+      {
+        type: 'toggle',
+        name: 'isFlat',
+        message: 'Create a flat file structure?',
+        initial: false,
+        active: 'yes',
+        inactive: 'no',
+      },
     ]
   }
 
