@@ -1,3 +1,6 @@
+![](https://i.ibb.co/vmkY3c0/Logo.png)
+
+
 #### Installation ([watch video](https://youtu.be/U77RNYuk1LA))
 
 To install the `create-snippet` package, run the command:
