@@ -46,7 +46,7 @@ export class CodeSnippet {
     fs.mkdirSync(mkdir, { recursive: true })
     fs.writeFileSync(writeFile, options.formattedSnippet)
     // eslint-disable-next-line no-console
-    console.log(`${chalk.green(`√`)} ${chalk.gray(`${options.pathSnippetFile}`)}`)
+    console.log(`${chalk.green(`√`)} ${chalk.gray(`${options.snippetFileName}`)}`)
   }
 
   public async start(): Promise<void> {
