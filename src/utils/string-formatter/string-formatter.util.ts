@@ -27,7 +27,7 @@ export class UtilStringFormatter {
     return stringInKebabCase.toUpperCase()
   }
 
-  toLowerKebabCase(stringInKebabCase: string): string {
+  public toLowerKebabCase(stringInKebabCase: string): string {
     return stringInKebabCase.toLowerCase()
   }
 
