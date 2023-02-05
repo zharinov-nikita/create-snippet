@@ -2,16 +2,11 @@
 import chalk from 'chalk'
 import fs from 'fs'
 import recursiveReaddir from 'recursive-readdir'
-import type { TypeArgs, TypeConfig } from './types'
+import type { TypeArgs, TypeConfig, TypeGeneratePath } from './types'
 import { UtilConfig, UtilPath, UtilPrompt, UtilSnippet } from './utils'
 
-interface TypeGeneratePath {
-  fileName: string
-  mkdirPath: string
-  writeFilePath: string
-}
-
 interface TypeCreateSnippetOptions extends TypeGeneratePath {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formattedSnippet: any
 }
 
@@ -45,10 +40,10 @@ export class CodeSnippet {
   }
 
   private createSnippet(options: TypeCreateSnippetOptions): void {
-    fs.mkdirSync(options.mkdirPath, { recursive: true })
-    fs.writeFileSync(options.writeFilePath, options.formattedSnippet)
+    fs.mkdirSync(options.pathSnippetFile, { recursive: true })
+    fs.writeFileSync(options.pathWriteSnippetFile, options.formattedSnippet)
     // eslint-disable-next-line no-console
-    console.log(`${chalk.green(`√`)} ${chalk.gray(`${options.fileName}`)}`)
+    console.log(`${chalk.green(`√`)} ${chalk.gray(`${options.pathSnippetFile}`)}`)
   }
 
   public async start(): Promise<void> {
@@ -59,9 +54,9 @@ export class CodeSnippet {
       const config = this.config.find(({ snippet }) => snippet === this.args.snippet)
       if (!config) throw new Error('config')
 
-      if (this.args.snippet === '') throw new Error(`specify the required argument --snippet=example`)
-      if (this.args.name === '') throw new Error(`specify the required argument --name=example`)
-      if (this.args.path === '') throw new Error(`specify the required argument --path=example`)
+      if (this.args.snippet === '') throw new Error(`specify the required argument snippet=example`)
+      if (this.args.name === '') throw new Error(`specify the required argument name=example`)
+      if (this.args.path === '') throw new Error(`specify the required argument path=example`)
 
       recursiveReaddir(config.files, (error, paths) => {
         if (error) throw new Error(error.message)
@@ -69,14 +64,14 @@ export class CodeSnippet {
         paths.forEach((pathToSnippet) => {
           const unformattedSnippet = this.generateUnformattedSnippet(pathToSnippet)
           const formattedSnippet = this.generateFormattedSnippet(unformattedSnippet)
-          const { fileName, mkdirPath, writeFilePath } = this.path.generate({
+          const path = this.path.generate({
             pathToSnippet,
             config,
             name: this.args.name,
             path: this.args.path,
           })
-          if (fs.existsSync(writeFilePath)) throw new Error(this.args.name)
-          this.createSnippet({ fileName, formattedSnippet, mkdirPath, writeFilePath })
+          if (fs.existsSync(path.pathWriteSnippetFile)) throw new Error(this.args.name)
+          this.createSnippet({ ...path, formattedSnippet })
         })
       })
     } catch (e) {
