@@ -1,4 +1,4 @@
-export class UtilStringFormatter {
+export class UtilString {
   public toCamelCase(stringInKebabCase: string): string {
     const array = stringInKebabCase.split('-')
     const firstWord = array[0]

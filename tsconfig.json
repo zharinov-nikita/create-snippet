@@ -6,7 +6,7 @@
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "lib": ["ES2021.String", "dom"],
     "outDir": "./dist/",
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": true
   },
   "include": ["src"],

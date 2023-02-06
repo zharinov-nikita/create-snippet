@@ -1,9 +1,9 @@
 import { describe, expect, test } from '@jest/globals'
-import { UtilStringFormatter } from './string-formatter.util'
+import { UtilString } from './string.util'
 
-describe('util/string-formatter', () => {
+describe('util/string', () => {
+  const util = new UtilString()
   const stringInKebabCase = 'hello-world'
-  const util = new UtilStringFormatter()
 
   test('toCase', () => {
     expect(util.toCamelCase(stringInKebabCase)).toBe('helloWorld')

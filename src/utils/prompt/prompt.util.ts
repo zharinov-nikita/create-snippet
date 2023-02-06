@@ -1,8 +1,7 @@
-import { prompt, PromptObject } from 'prompts'
+import { prompt } from 'prompts'
 import type { TypeArgs } from '../../types'
 import { UtilConfig } from '../config'
-
-type Question = PromptObject[]
+import type { TypeQuestion } from './prompt.type'
 
 export class UtilPrompt {
   private config: UtilConfig
@@ -11,7 +10,7 @@ export class UtilPrompt {
     this.config = new UtilConfig()
   }
 
-  private createQuestion(): Question {
+  private createQuestion(): TypeQuestion {
     return [
       {
         type: 'select',
