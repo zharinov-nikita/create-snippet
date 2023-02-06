@@ -21,6 +21,9 @@
   "bugs": {
     "url": "https://github.com/zharinov-nikita/create-snippet/issues"
   },
+  "files": [
+    "dist"
+  ],
   "homepage": "https://github.com/zharinov-nikita/create-snippet#readme",
   "scripts": {
     "build": "tsc",
