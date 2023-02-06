@@ -21,6 +21,8 @@ export class UtilCli {
       name: '',
       path: '',
       isFlat: false,
+      prefix: '',
+      suffix: '',
     }
   }
 
@@ -28,7 +30,7 @@ export class UtilCli {
     try {
       const args = await this.prompt.getArgs()
       this.args = { ...this.args, ...args }
-      const { snippet, name, path, isFlat } = this.args
+      const { snippet, name, path, isFlat, prefix, suffix } = this.args
 
       const config = this.config.find((item) => item.snippet === snippet)
       if (!config) throw new Error('config')
@@ -41,7 +43,7 @@ export class UtilCli {
         if (error) throw new Error(error.message)
 
         paths.forEach((pathToSnippet) => {
-          const formattedSnippet = this.snippet.format({ pathToSnippet, name })
+          const formattedSnippet = this.snippet.format({ pathToSnippet, name, prefix, suffix })
           const generatePath = this.path.generate({
             pathToSnippet,
             config,

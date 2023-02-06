@@ -6,12 +6,18 @@ UtilCli {
     "isFlat": false,
     "name": "",
     "path": "",
+    "prefix": "",
     "snippet": "",
+    "suffix": "",
   },
   "config": [
     {
       "files": ".create-snippet\\my-snippet",
       "snippet": "my-snippet",
+    },
+    {
+      "files": ".create-snippet\\ui",
+      "snippet": "ui",
     },
   ],
   "path": UtilPath {

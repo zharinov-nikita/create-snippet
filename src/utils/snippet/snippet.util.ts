@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import fs from 'fs'
-import { enumSnippetName } from '../../enums'
+import { enumPrefixName, enumSnippetName, enumSuffixName } from '../../enums'
 import { UtilString } from '../string'
 import type { TypeCreateOptions, TypeFormatOptions } from './snippet.type'
 
@@ -11,16 +11,33 @@ export class UtilSnippet {
     this.string = new UtilString()
   }
 
-  public format({ pathToSnippet, name }: TypeFormatOptions): string {
-    const unformattedSnippet = JSON.stringify(fs.readFileSync(pathToSnippet, 'utf-8'))
-    const formattedSnippet = unformattedSnippet
-      .replaceAll(enumSnippetName.camelCase, `${this.string.toCamelCase(name)}`)
-      .replaceAll(enumSnippetName.pascalCase, `${this.string.toPascalCase(name)}`)
-      .replaceAll(enumSnippetName.lowerSnakeCase, `${this.string.toLowerSnakeCase(name)}`)
-      .replaceAll(enumSnippetName.upperSnakeCase, `${this.string.toUpperSnakeCase(name)}`)
-      .replaceAll(enumSnippetName.lowerKebabCase, `${this.string.toLowerKebabCase(name)}`)
-      .replaceAll(enumSnippetName.upperKebabCase, `${this.string.toUpperKebabCase(name)}`)
-    return JSON.parse(formattedSnippet)
+  public format({ pathToSnippet, name, prefix, suffix }: TypeFormatOptions): string {
+    const keysEnumSnippetName = Object.keys(enumSnippetName)
+    const valuesEnumSnippetName = Object.values(enumSnippetName)
+    const keysEnumPrefixName = Object.keys(enumPrefixName)
+    const valuesEnumPrefixName = Object.values(enumPrefixName)
+    const keysEnumSuffixName = Object.keys(enumSuffixName)
+    const valuesEnumSuffixName = Object.values(enumSuffixName)
+
+    const keys = [...keysEnumSnippetName, ...keysEnumPrefixName, ...keysEnumSuffixName]
+
+    let unformattedSnippet = JSON.stringify(fs.readFileSync(pathToSnippet, 'utf-8'))
+
+    const replace = (replaceValue: string, values: string[]) => {
+      values.forEach((value, index) => {
+        const mainCase = keys[index].charAt(0).toUpperCase() + keys[index].slice(1)
+        // TODO: fix as 'toCamelCase'
+        const method = `to${mainCase}` as 'toCamelCase'
+        const string = replaceValue.length > 0 ? this.string[method](replaceValue) : ''
+        unformattedSnippet = unformattedSnippet.replaceAll(value, string)
+      })
+    }
+
+    replace(name, valuesEnumSnippetName)
+    replace(prefix, valuesEnumPrefixName)
+    replace(suffix, valuesEnumSuffixName)
+
+    return JSON.parse(unformattedSnippet)
   }
 
   public create(options: TypeCreateOptions) {
