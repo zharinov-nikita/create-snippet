@@ -12,30 +12,32 @@ export class UtilSnippet {
   }
 
   public format({ pathToSnippet, name, prefix, suffix }: TypeFormatOptions): string {
-    const unformattedSnippet = JSON.stringify(fs.readFileSync(pathToSnippet, 'utf-8'))
-    const formattedSnippet = unformattedSnippet
-      // name
-      .replaceAll(enumSnippetName.camelCase, `${this.string.toCamelCase(name)}`)
-      .replaceAll(enumSnippetName.pascalCase, `${this.string.toPascalCase(name)}`)
-      .replaceAll(enumSnippetName.lowerSnakeCase, `${this.string.toLowerSnakeCase(name)}`)
-      .replaceAll(enumSnippetName.upperSnakeCase, `${this.string.toUpperSnakeCase(name)}`)
-      .replaceAll(enumSnippetName.lowerKebabCase, `${this.string.toLowerKebabCase(name)}`)
-      .replaceAll(enumSnippetName.upperKebabCase, `${this.string.toUpperKebabCase(name)}`)
-      // prefix
-      .replaceAll(enumPrefixName.camelCase, `${this.string.toCamelCase(prefix)}`)
-      .replaceAll(enumPrefixName.pascalCase, `${this.string.toPascalCase(prefix)}`)
-      .replaceAll(enumPrefixName.lowerSnakeCase, `${this.string.toLowerSnakeCase(prefix)}`)
-      .replaceAll(enumPrefixName.upperSnakeCase, `${this.string.toUpperSnakeCase(prefix)}`)
-      .replaceAll(enumPrefixName.lowerKebabCase, `${this.string.toLowerKebabCase(prefix)}`)
-      .replaceAll(enumPrefixName.upperKebabCase, `${this.string.toUpperKebabCase(prefix)}`)
-      // suffix
-      .replaceAll(enumSuffixName.camelCase, `${this.string.toCamelCase(suffix)}`)
-      .replaceAll(enumSuffixName.pascalCase, `${this.string.toPascalCase(suffix)}`)
-      .replaceAll(enumSuffixName.lowerSnakeCase, `${this.string.toLowerSnakeCase(suffix)}`)
-      .replaceAll(enumSuffixName.upperSnakeCase, `${this.string.toUpperSnakeCase(suffix)}`)
-      .replaceAll(enumSuffixName.lowerKebabCase, `${this.string.toLowerKebabCase(suffix)}`)
-      .replaceAll(enumSuffixName.upperKebabCase, `${this.string.toUpperKebabCase(suffix)}`)
-    return JSON.parse(formattedSnippet)
+    const keysEnumSnippetName = Object.keys(enumSnippetName)
+    const valuesEnumSnippetName = Object.values(enumSnippetName)
+    const keysEnumPrefixName = Object.keys(enumPrefixName)
+    const valuesEnumPrefixName = Object.values(enumPrefixName)
+    const keysEnumSuffixName = Object.keys(enumSuffixName)
+    const valuesEnumSuffixName = Object.values(enumSuffixName)
+
+    const keys = [...keysEnumSnippetName, ...keysEnumPrefixName, ...keysEnumSuffixName]
+
+    let unformattedSnippet = JSON.stringify(fs.readFileSync(pathToSnippet, 'utf-8'))
+
+    const replace = (replaceValue: string, values: string[]) => {
+      values.forEach((value, index) => {
+        const mainCase = keys[index].charAt(0).toUpperCase() + keys[index].slice(1)
+        // TODO: fix as 'toCamelCase'
+        const method = `to${mainCase}` as 'toCamelCase'
+        const string = replaceValue.length > 0 ? this.string[method](replaceValue) : ''
+        unformattedSnippet = unformattedSnippet.replaceAll(value, string)
+      })
+    }
+
+    replace(name, valuesEnumSnippetName)
+    replace(prefix, valuesEnumPrefixName)
+    replace(suffix, valuesEnumSuffixName)
+
+    return JSON.parse(unformattedSnippet)
   }
 
   public create(options: TypeCreateOptions) {

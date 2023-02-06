@@ -37,8 +37,6 @@ export class UtilPrompt {
   public async getArgs(): Promise<TypeArgs> {
     const question = this.createQuestion()
     const args = await prompt(question)
-    // eslint-disable-next-line no-console
-    console.log(args)
     return args
   }
 }
