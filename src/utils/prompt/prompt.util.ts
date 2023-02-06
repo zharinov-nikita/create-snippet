@@ -19,8 +19,8 @@ export class UtilPrompt {
         choices: this.config.generate().map(({ snippet }) => ({ title: snippet, value: snippet })),
         initial: 0,
       },
-      { type: 'text', name: 'name', message: 'Pick a name' },
-      { type: 'text', name: 'path', message: 'Pick a path' },
+      { type: 'text', name: 'name', message: 'Pick a name (required)' },
+      { type: 'text', name: 'path', message: 'Pick a path (required)' },
       {
         type: 'toggle',
         name: 'isFlat',
@@ -29,11 +29,16 @@ export class UtilPrompt {
         active: 'yes',
         inactive: 'no',
       },
+      { type: 'text', name: 'prefix', message: 'Pick a prefix (optional - to skip, press enter)' },
+      { type: 'text', name: 'suffix', message: 'Pick a suffix (optional - to skip, press enter)' },
     ]
   }
 
   public async getArgs(): Promise<TypeArgs> {
     const question = this.createQuestion()
-    return await prompt(question)
+    const args = await prompt(question)
+    // eslint-disable-next-line no-console
+    console.log(args)
+    return args
   }
 }

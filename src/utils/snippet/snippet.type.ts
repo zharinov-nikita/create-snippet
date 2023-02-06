@@ -1,8 +1,7 @@
-import type { TypeGeneratePath } from '../../types'
+import type { TypeArgs, TypeGeneratePath } from '../../types'
 
-export interface TypeFormatOptions {
+export interface TypeFormatOptions extends Pick<TypeArgs, 'name' | 'suffix' | 'prefix'> {
   pathToSnippet: string
-  name: string
 }
 
 export interface TypeCreateOptions extends TypeGeneratePath {

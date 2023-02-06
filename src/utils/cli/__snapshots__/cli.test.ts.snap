@@ -6,7 +6,9 @@ UtilCli {
     "isFlat": false,
     "name": "",
     "path": "",
+    "prefix": "",
     "snippet": "",
+    "suffix": "",
   },
   "config": [
     {
