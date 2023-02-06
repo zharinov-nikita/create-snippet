@@ -1,7 +1,7 @@
 import path from 'path'
 import { enumSnippetName } from '../../enums'
 import { TypeGeneratePath } from '../../types'
-import { UtilStringFormatter } from '../string-formatter'
+import { UtilString } from '../string'
 import type {
   TypeGenerateDefaultPath,
   TypeGenerateFlatPath,
@@ -10,21 +10,21 @@ import type {
 } from './path.type'
 
 export class UtilPath {
-  private stringFormatter: UtilStringFormatter
+  private string: UtilString
 
   constructor() {
-    this.stringFormatter = new UtilStringFormatter()
+    this.string = new UtilString()
   }
 
   private generateSnippetFileName(options: TypeGenerateSnippetFileNameOptions): string {
     return path
       .basename(options.pathToSnippet)
-      .replaceAll(enumSnippetName.camelCase, this.stringFormatter.toCamelCase(options.name))
-      .replaceAll(enumSnippetName.lowerKebabCase, this.stringFormatter.toLowerKebabCase(options.name))
-      .replaceAll(enumSnippetName.lowerSnakeCase, this.stringFormatter.toLowerSnakeCase(options.name))
-      .replaceAll(enumSnippetName.pascalCase, this.stringFormatter.toPascalCase(options.name))
-      .replaceAll(enumSnippetName.upperKebabCase, this.stringFormatter.toUpperKebabCase(options.name))
-      .replaceAll(enumSnippetName.upperSnakeCase, this.stringFormatter.toUpperSnakeCase(options.name))
+      .replaceAll(enumSnippetName.camelCase, this.string.toCamelCase(options.name))
+      .replaceAll(enumSnippetName.lowerKebabCase, this.string.toLowerKebabCase(options.name))
+      .replaceAll(enumSnippetName.lowerSnakeCase, this.string.toLowerSnakeCase(options.name))
+      .replaceAll(enumSnippetName.pascalCase, this.string.toPascalCase(options.name))
+      .replaceAll(enumSnippetName.upperKebabCase, this.string.toUpperKebabCase(options.name))
+      .replaceAll(enumSnippetName.upperSnakeCase, this.string.toUpperSnakeCase(options.name))
   }
 
   private generateDefaultPath(options: TypeGenerateOptions): TypeGenerateDefaultPath {

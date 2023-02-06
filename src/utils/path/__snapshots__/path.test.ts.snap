@@ -2,6 +2,6 @@
 
 exports[`util/path snapshot: util 1`] = `
 UtilPath {
-  "stringFormatter": UtilStringFormatter {},
+  "string": UtilString {},
 }
 `;

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`util/cli snapshot: util 1`] = `
+UtilCli {
+  "args": {
+    "isFlat": false,
+    "name": "",
+    "path": "",
+    "snippet": "",
+  },
+  "config": [
+    {
+      "files": ".create-snippet\\my-snippet",
+      "snippet": "my-snippet",
+    },
+  ],
+  "path": UtilPath {
+    "string": UtilString {},
+  },
+  "prompt": UtilPrompt {
+    "config": UtilConfig {},
+  },
+  "snippet": UtilSnippet {
+    "string": UtilString {},
+  },
+}
+`;
