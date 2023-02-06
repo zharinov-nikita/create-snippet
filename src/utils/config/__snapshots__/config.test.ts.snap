@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`util/config snapshot: util 1`] = `UtilConfig {}`;
