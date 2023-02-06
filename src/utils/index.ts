@@ -1,5 +1,6 @@
 export * from './argv'
 export * from './config'
+export * from './create-snippet'
 export * from './path'
 export * from './prompt'
 export * from './snippet'
