@@ -15,7 +15,7 @@ export class UtilConfig {
     const isInit = fs.existsSync('.create-snippet')
     const argInit = args.find((arg) => arg === 'init')
 
-    if (!isInit && argInit === 'init') {
+    if (argInit === 'init') {
       return mkdir.forEach((item, index) => {
         fs.mkdirSync(path.join(item), { recursive: true })
         fs.writeFileSync(
