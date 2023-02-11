@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`module/argv snapshot 1`] = `
+{
+  "key": "make",
+  "value": "ford",
+}
+`;
+
+exports[`module/argv snapshot 2`] = `"ford"`;
+
+exports[`module/argv snapshot 3`] = `"make"`;
+
+exports[`module/argv snapshot 4`] = `
+{
+  "key": null,
+  "value": null,
+}
+`;
+
+exports[`module/argv snapshot 5`] = `null`;
+
+exports[`module/argv snapshot 6`] = `null`;
