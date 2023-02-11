@@ -1,14 +1,14 @@
 import fs from 'fs'
 import path from 'path'
-import { TypeConfig } from '../../types'
+import { CONSTANTS } from '../../constants'
 
 export class ModuleConfig {
   public readonly rootDirConfig: string
   public readonly isRootDirConfig: boolean
 
-  constructor(rootDirConfig: string) {
-    this.rootDirConfig = rootDirConfig
-    this.isRootDirConfig = fs.existsSync(rootDirConfig)
+  constructor() {
+    this.rootDirConfig = CONSTANTS.ROOT_DIR_CONFIG
+    this.isRootDirConfig = fs.existsSync(CONSTANTS.ROOT_DIR_CONFIG)
   }
 
   public initialize(): void {
@@ -22,14 +22,5 @@ export class ModuleConfig {
         `export const SnippetName = "SnippetName ${index + 1}"`
       )
     })
-  }
-
-  public getConfig(): TypeConfig[] {
-    const snippets = fs.readdirSync(this.rootDirConfig)
-    if (!this.isRootDirConfig) throw new Error('create-snippet has not been initialized yet')
-    return snippets.map((snippetName) => ({
-      snippetName,
-      pathToSnippet: path.join(...[this.rootDirConfig, snippetName]),
-    }))
   }
 }

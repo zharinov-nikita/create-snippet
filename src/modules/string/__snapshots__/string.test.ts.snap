@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`module/string snapshot: HELLO_WORLD 1`] = `"HELLO_WORLD"`;
+
+exports[`module/string snapshot: HELLO-WORLD 1`] = `"HELLO-WORLD"`;
+
+exports[`module/string snapshot: HelloWorld 1`] = `"HelloWorld"`;
+
+exports[`module/string snapshot: hello_world 1`] = `"hello_world"`;
+
+exports[`module/string snapshot: hello-world 1`] = `"hello-world"`;
+
+exports[`module/string snapshot: helloWorld 1`] = `"helloWorld"`;
