@@ -1,5 +1,15 @@
-#!/usr/bin/env node
-import { UtilCli } from './utils'
+import { ModuleConfig } from './modules'
 
-const cli = new UtilCli()
-cli.start()
+class Cli {
+  private moduleConfig: ModuleConfig
+
+  constructor() {
+    this.moduleConfig = new ModuleConfig('.create-snippet')
+  }
+
+  public start() {
+    this.moduleConfig.initialize()
+  }
+}
+
+new Cli().start()

@@ -1,6 +1,4 @@
-export interface TypeConfigItem {
-  snippet: string
-  files: string
+export interface TypeConfig {
+  snippetName: string
+  pathToSnippet: string
 }
-
-export type TypeConfig = TypeConfigItem[]
