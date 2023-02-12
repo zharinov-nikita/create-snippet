@@ -1,25 +1,26 @@
-import { TypeArgvGet } from './argv.type'
+import { InterfaceArgv } from './argv.interface'
+import { TypeArgv } from './argv.type'
 
-export class ModuleArgv {
+export class ModuleArgv implements InterfaceArgv<TypeArgv> {
   private args: string[]
 
   constructor() {
     this.args = [...process.argv.slice(2)]
   }
 
-  private formatArg(arg: string): TypeArgvGet {
+  public format(name: string) {
     return {
-      key: arg.split('=')[0].replaceAll('--', '') || null,
-      value: arg.split('=')[1] || null,
+      key: name.split('=')[0].replaceAll('--', '') || null,
+      value: name.split('=')[1] || null,
     }
   }
 
-  public findArg(name: string): TypeArgvGet {
+  public find(name: string) {
     const regexp = new RegExp(`${name}`)
     const arg = this.args.find((item) => (regexp.test(item) ? item : undefined))
 
     if (typeof arg === 'string') {
-      return { ...this.formatArg(arg) }
+      return { ...this.format(arg) }
     }
 
     return {
@@ -28,13 +29,13 @@ export class ModuleArgv {
     }
   }
 
-  public getNotFormattedArgs(): string[] {
+  public getNotFormatted() {
     return this.args
   }
 
-  public getFormattedArgs(): TypeArgvGet[] {
+  public getFormatted() {
     return this.args.map((arg) => ({
-      ...this.formatArg(arg),
+      ...this.format(arg),
     }))
   }
 }
