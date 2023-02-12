@@ -87,29 +87,28 @@ export class ModuleSnippet {
   }
 
   private formatSnippet(pathToSnippet: string) {
+    const matches = {
+      ...matched(enumPrefixName, this.options.prefix),
+      ...matched(enumSnippetName, this.options.name),
+      ...matched(enumSuffixName, this.options.suffix),
+    }
+
+    function matched(object: any, replace: string) {
+      let matches: any = {}
+
+      Object.keys(object).map((item) => {
+        const myKey = `${object[item]}`
+        const myValue: string = new ModuleString()[
+          `to${item.charAt(0).toUpperCase() + item.slice(1)}` as 'toCamelCase'
+        ](replace)
+        matches = { ...matches, [myKey]: myValue }
+      })
+      return matches
+    }
+
     const unformattedSnippet = JSON.stringify(fs.readFileSync(nodePath.join(pathToSnippet), 'utf-8'))
-    const formattedSnippet = unformattedSnippet
-      .replaceAll(enumSnippetName.camelCase, `${this.moduleString.toCamelCase(this.options.name)}`)
-      .replaceAll(enumSnippetName.pascalCase, `${this.moduleString.toPascalCase(this.options.name)}`)
-      .replaceAll(enumSnippetName.lowerSnakeCase, `${this.moduleString.toLowerSnakeCase(this.options.name)}`)
-      .replaceAll(enumSnippetName.upperSnakeCase, `${this.moduleString.toUpperSnakeCase(this.options.name)}`)
-      .replaceAll(enumSnippetName.lowerKebabCase, `${this.moduleString.toLowerKebabCase(this.options.name)}`)
-      .replaceAll(enumSnippetName.upperKebabCase, `${this.moduleString.toUpperKebabCase(this.options.name)}`)
-
-      .replaceAll(enumPrefixName.camelCase, `${this.moduleString.toCamelCase(this.options.prefix)}`)
-      .replaceAll(enumPrefixName.pascalCase, `${this.moduleString.toPascalCase(this.options.prefix)}`)
-      .replaceAll(enumPrefixName.lowerSnakeCase, `${this.moduleString.toLowerSnakeCase(this.options.prefix)}`)
-      .replaceAll(enumPrefixName.upperSnakeCase, `${this.moduleString.toUpperSnakeCase(this.options.prefix)}`)
-      .replaceAll(enumPrefixName.lowerKebabCase, `${this.moduleString.toLowerKebabCase(this.options.prefix)}`)
-      .replaceAll(enumPrefixName.upperKebabCase, `${this.moduleString.toUpperKebabCase(this.options.prefix)}`)
-
-      .replaceAll(enumSuffixName.camelCase, `${this.moduleString.toCamelCase(this.options.suffix)}`)
-      .replaceAll(enumSuffixName.pascalCase, `${this.moduleString.toPascalCase(this.options.suffix)}`)
-      .replaceAll(enumSuffixName.lowerSnakeCase, `${this.moduleString.toLowerSnakeCase(this.options.suffix)}`)
-      .replaceAll(enumSuffixName.upperSnakeCase, `${this.moduleString.toUpperSnakeCase(this.options.suffix)}`)
-      .replaceAll(enumSuffixName.lowerKebabCase, `${this.moduleString.toLowerKebabCase(this.options.suffix)}`)
-      .replaceAll(enumSuffixName.upperKebabCase, `${this.moduleString.toUpperKebabCase(this.options.suffix)}`)
-
+    const regexp = new RegExp(Object.keys(matches).join('|'), 'g')
+    const formattedSnippet = unformattedSnippet.replace(regexp, (match: any) => matches[match])
     return JSON.parse(formattedSnippet)
   }
 
