@@ -51,7 +51,7 @@ export class ModuleSnippet {
         }),
         initial: 0,
       },
-      { type: 'text', name: 'name', message: 'Pick a name' },
+      { type: 'text', name: 'name', message: 'Pick a name (specify a string in the kebab-case format)' },
       { type: 'text', name: 'path', message: 'Pick a path' },
       {
         type: 'toggle',
@@ -66,7 +66,7 @@ export class ModuleSnippet {
           return (await this.check(values.snippetName)).isPrefix ? 'text' : null
         },
         name: 'prefix',
-        message: 'Pick a prefix',
+        message: 'Pick a prefix (specify a string in the kebab-case format)',
       },
 
       {
@@ -74,7 +74,7 @@ export class ModuleSnippet {
           return (await this.check(values.snippetName)).isSuffix ? 'text' : null
         },
         name: 'suffix',
-        message: 'Pick a suffix',
+        message: 'Pick a suffix (specify a string in the kebab-case format)',
       },
     ]
 
