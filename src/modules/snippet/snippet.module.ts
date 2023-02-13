@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import fs from 'fs'
 import nodePath from 'path'
 import { prompt } from 'prompts'
@@ -170,6 +171,8 @@ export class ModuleSnippet {
           this.options.isFlat ? myPath.pathFlatWriteSnippetFile : myPath.pathWriteSnippetFile,
           data
         )
+        // eslint-disable-next-line no-console
+        console.log(`${chalk.green(`√`)} ${chalk.gray(myPath.snippetFileName)}`)
       })
     })
   }
