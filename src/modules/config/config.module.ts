@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { CONSTANTS } from '../../constants'
 import { enumPrefixName, enumSnippetName, enumSuffixName } from '../../enums'
-import { TypeConfig } from '../../types'
+import { TypeCase, TypeConfig } from '../../types'
 import { InterfaceConfig } from './config.interface'
 
 export class ModuleConfig implements InterfaceConfig<TypeConfig> {
@@ -15,82 +15,47 @@ export class ModuleConfig implements InterfaceConfig<TypeConfig> {
   }
 
   private example(index: number): string {
+    function objectToString(object: TypeCase): string {
+      const values = Object.values(object)
+      const indexLastValue = values.length - 1
+      return values
+        .map((item: string, i) => `'${item.replace(',', '')}'[x]${i !== indexLastValue ? '\n' : ''}`)
+        .toString()
+        .replaceAll(',', '')
+        .replaceAll('[x]', ',')
+    }
+
     if (index === 0)
       return `export const SnippetName = [
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
+${objectToString(enumSnippetName)}
 ]
     `
 
     if (index === 1)
       return `export const PrefixNameSnippetName = [
-  '${enumPrefixName.camelCase}',
-  '${enumPrefixName.lowerKebabCase}',
-  '${enumPrefixName.lowerSnakeCase}',
-  '${enumPrefixName.pascalCase}',
-  '${enumPrefixName.upperKebabCase}',
-  '${enumPrefixName.upperSnakeCase}',
+${objectToString(enumPrefixName)}
       
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
+${objectToString(enumSnippetName)}
 ]`
 
     if (index === 2)
       return `export const SnippetNameSuffixName = [
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
-      
-  '${enumSuffixName.camelCase}',
-  '${enumSuffixName.lowerKebabCase}',
-  '${enumSuffixName.lowerSnakeCase}',
-  '${enumSuffixName.pascalCase}',
-  '${enumSuffixName.upperKebabCase}',
-  '${enumSuffixName.upperSnakeCase}',
+${objectToString(enumSnippetName)}
+    
+${objectToString(enumSuffixName)}
 ]`
 
     if (index === 3)
       return `export const PrefixNameSnippetNameSuffixName = [
-  ${enumPrefixName.camelCase}',
-  '${enumPrefixName.lowerKebabCase}',
-  '${enumPrefixName.lowerSnakeCase}',
-  '${enumPrefixName.pascalCase}',
-  '${enumPrefixName.upperKebabCase}',
-  '${enumPrefixName.upperSnakeCase}',
-          
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
-        
-  '${enumSuffixName.camelCase}',
-  '${enumSuffixName.lowerKebabCase}',
-  '${enumSuffixName.lowerSnakeCase}',
-  '${enumSuffixName.pascalCase}',
-  '${enumSuffixName.upperKebabCase}',
-  '${enumSuffixName.upperSnakeCase}',
+${objectToString(enumPrefixName)}
+    
+${objectToString(enumSnippetName)}
+
+${objectToString(enumSuffixName)}
 ]`
 
     return `export const SnippetName = [
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
+${objectToString(enumSnippetName)}
 ]
     `
   }
@@ -111,5 +76,56 @@ export class ModuleConfig implements InterfaceConfig<TypeConfig> {
       snippetName,
       pathToSnippet: path.join(...[this.rootDirConfig, snippetName]),
     }))
+  }
+
+  public help(): void {
+    // eslint-disable-next-line no-console
+    console.log(
+      `
+Documentation
+
+npx create-snippet --help will show hints
+npx create-snippet --init initializes the project
+npx create-snippet --generate generates a new snippet
+
+New snippet
+
+When creating a new snippet, create a directory inside the 
+directory .create-snippet with an arbitrary name,
+create the required number of files and directories inside this directory.
+    
+SnippetName
+    
+The strings [snippetName] specified inside the file or in the file name 
+will be converted to a custom string when generating a new snippet.
+    
+PrefixName
+    
+The strings [prefixName] specified inside the file when generating a new
+snippet will be converted to custom strings.
+    
+SuffixName
+    
+The strings [suffixName] specified inside the file when generating a new
+snippet will be converted to custom strings.
+
+Supported cases for strings
+
+1) camelCase
+2) PascalCase
+3) lower_snake_case
+4) UPPER_SNAKE_CASE
+5) lower-kebab-case
+6) UPPER-KEBAB-CASE
+
+Specifying parameters via the console
+
+1) snippet - any string
+2) name - any string in the format lower-kebab-case
+3) path - any string
+4) prefix - any string in the format lower-kebab-case
+4) suffix - any string in the format lower-kebab-case
+`
+    )
   }
 }
