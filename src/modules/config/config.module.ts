@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { CONSTANTS } from '../../constants'
 import { enumPrefixName, enumSnippetName, enumSuffixName } from '../../enums'
-import { TypeConfig } from '../../types'
+import { TypeCase, TypeConfig } from '../../types'
 import { InterfaceConfig } from './config.interface'
 
 export class ModuleConfig implements InterfaceConfig<TypeConfig> {
@@ -15,82 +15,47 @@ export class ModuleConfig implements InterfaceConfig<TypeConfig> {
   }
 
   private example(index: number): string {
+    function objectToString(object: TypeCase): string {
+      const values = Object.values(object)
+      const indexLastValue = values.length - 1
+      return values
+        .map((item: string, i) => `'${item.replace(',', '')}'[x]${i !== indexLastValue ? '\n' : ''}`)
+        .toString()
+        .replaceAll(',', '')
+        .replaceAll('[x]', ',')
+    }
+
     if (index === 0)
       return `export const SnippetName = [
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
+${objectToString(enumSnippetName)}
 ]
     `
 
     if (index === 1)
       return `export const PrefixNameSnippetName = [
-  '${enumPrefixName.camelCase}',
-  '${enumPrefixName.lowerKebabCase}',
-  '${enumPrefixName.lowerSnakeCase}',
-  '${enumPrefixName.pascalCase}',
-  '${enumPrefixName.upperKebabCase}',
-  '${enumPrefixName.upperSnakeCase}',
+${objectToString(enumPrefixName)}
       
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
+${objectToString(enumSnippetName)}
 ]`
 
     if (index === 2)
       return `export const SnippetNameSuffixName = [
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
-      
-  '${enumSuffixName.camelCase}',
-  '${enumSuffixName.lowerKebabCase}',
-  '${enumSuffixName.lowerSnakeCase}',
-  '${enumSuffixName.pascalCase}',
-  '${enumSuffixName.upperKebabCase}',
-  '${enumSuffixName.upperSnakeCase}',
+${objectToString(enumSnippetName)}
+    
+${objectToString(enumSuffixName)}
 ]`
 
     if (index === 3)
       return `export const PrefixNameSnippetNameSuffixName = [
-  ${enumPrefixName.camelCase}',
-  '${enumPrefixName.lowerKebabCase}',
-  '${enumPrefixName.lowerSnakeCase}',
-  '${enumPrefixName.pascalCase}',
-  '${enumPrefixName.upperKebabCase}',
-  '${enumPrefixName.upperSnakeCase}',
-          
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
-        
-  '${enumSuffixName.camelCase}',
-  '${enumSuffixName.lowerKebabCase}',
-  '${enumSuffixName.lowerSnakeCase}',
-  '${enumSuffixName.pascalCase}',
-  '${enumSuffixName.upperKebabCase}',
-  '${enumSuffixName.upperSnakeCase}',
+${objectToString(enumPrefixName)}
+    
+${objectToString(enumSnippetName)}
+
+${objectToString(enumSuffixName)}
 ]`
 
     return `export const SnippetName = [
-  '${enumSnippetName.camelCase}',
-  '${enumSnippetName.lowerKebabCase}',
-  '${enumSnippetName.lowerSnakeCase}',
-  '${enumSnippetName.pascalCase}',
-  '${enumSnippetName.upperKebabCase}',
-  '${enumSnippetName.upperSnakeCase}',
+${objectToString(enumSnippetName)}
 ]
     `
   }
