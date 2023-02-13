@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
 import { CONSTANTS } from '../../constants'
@@ -68,6 +69,9 @@ ${objectToString(enumSnippetName)}
       fs.mkdirSync(path.join(pathExample), { recursive: true })
       fs.writeFileSync(path.join(...[pathExample, 'snippet-name.ts']), this.example(index))
     })
+
+    // eslint-disable-next-line no-console
+    console.log(`${chalk.green(`√`)} ${chalk.gray(`the project has been successfully initialized`)}`)
   }
 
   public get() {
