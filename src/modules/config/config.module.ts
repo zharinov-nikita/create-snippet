@@ -92,7 +92,7 @@ New snippet
 
 When creating a new snippet, create a directory inside the 
 directory .create-snippet with an arbitrary name,
-create the required number of files and directories inside this category.
+create the required number of files and directories inside this directory.
     
 SnippetName
     
