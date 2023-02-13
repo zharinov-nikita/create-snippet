@@ -62,7 +62,7 @@ export class ModuleConfig implements InterfaceConfig<TypeConfig> {
 
     if (index === 3)
       return `export const PrefixNameSnippetNameSuffixName = [
-  ${enumPrefixName.camelCase}',
+  '${enumPrefixName.camelCase}',
   '${enumPrefixName.lowerKebabCase}',
   '${enumPrefixName.lowerSnakeCase}',
   '${enumPrefixName.pascalCase}',

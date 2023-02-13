@@ -1,3 +1,5 @@
 export * from './args.type'
+export * from './case.type'
 export * from './config.type'
 export * from './path.type'
+export * from './string-conversion-methods.type'

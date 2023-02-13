@@ -4,6 +4,7 @@ import { prompt } from 'prompts'
 import recursiveReadDir from 'recursive-readdir'
 import { CONSTANTS } from '../../constants'
 import { enumPrefixName, enumSnippetName, enumSuffixName } from '../../enums'
+import type { TypeCase, TypeStringConversionMethod } from '../../types'
 import { ModuleConfig } from '../config'
 import { ModulePath } from '../path'
 import { ModuleString } from '../string'
@@ -86,24 +87,36 @@ export class ModuleSnippet {
     return fs.existsSync(pathDirectoryCreatedSnippet)
   }
 
+  private createMatches(object: TypeCase, replace: string): any {
+    type Key = keyof typeof object
+
+    let matches: any = {}
+
+    Object.keys(object).map((item) => {
+      const stringConversionMethod = `to${
+        item.charAt(0).toUpperCase() + item.slice(1)
+      }` as TypeStringConversionMethod
+      const myKey = `${object[item as Key]}`
+      const myValue: string = this.moduleString[stringConversionMethod](replace)
+      matches = { ...matches, [myKey]: myValue }
+    })
+
+    return matches
+  }
+
+  private getNumberMatchesString(arraySearchStrings: string[], data: string) {
+    let counter = 0
+    arraySearchStrings.forEach((searchString) => {
+      if (new RegExp(searchString).test(data)) counter += 1
+    })
+    return counter
+  }
+
   private formatSnippet(pathToSnippet: string) {
     const matches = {
-      ...matched(enumPrefixName, this.options.prefix),
-      ...matched(enumSnippetName, this.options.name),
-      ...matched(enumSuffixName, this.options.suffix),
-    }
-
-    function matched(object: any, replace: string) {
-      let matches: any = {}
-
-      Object.keys(object).map((item) => {
-        const myKey = `${object[item]}`
-        const myValue: string = new ModuleString()[
-          `to${item.charAt(0).toUpperCase() + item.slice(1)}` as 'toCamelCase'
-        ](replace)
-        matches = { ...matches, [myKey]: myValue }
-      })
-      return matches
+      ...this.createMatches(enumPrefixName, this.options.prefix),
+      ...this.createMatches(enumSnippetName, this.options.name),
+      ...this.createMatches(enumSuffixName, this.options.suffix),
     }
 
     const unformattedSnippet = JSON.stringify(fs.readFileSync(nodePath.join(pathToSnippet), 'utf-8'))
@@ -113,28 +126,22 @@ export class ModuleSnippet {
   }
 
   private async check(pathToSnippet: string) {
-    let prefix = 0
-    let suffix = 0
-
     const myPaths = await recursiveReadDir(nodePath.join(...[this.rootDirConfig, pathToSnippet]))
+
+    let isPrefix = false
+    let isSuffix = false
 
     myPaths.forEach((item) => {
       const data = JSON.stringify(fs.readFileSync(item, 'utf-8'))
-      if (new RegExp(enumPrefixName.camelCase).test(data)) prefix += 1
-      if (new RegExp(enumPrefixName.lowerKebabCase).test(data)) prefix += 1
-      if (new RegExp(enumPrefixName.lowerSnakeCase).test(data)) prefix += 1
-      if (new RegExp(enumPrefixName.pascalCase).test(data)) prefix += 1
-      if (new RegExp(enumPrefixName.upperKebabCase).test(data)) prefix += 1
-      if (new RegExp(enumPrefixName.upperSnakeCase).test(data)) prefix += 1
-      if (new RegExp(enumSuffixName.camelCase).test(data)) suffix += 1
-      if (new RegExp(enumSuffixName.lowerKebabCase).test(data)) suffix += 1
-      if (new RegExp(enumSuffixName.lowerSnakeCase).test(data)) suffix += 1
-      if (new RegExp(enumSuffixName.pascalCase).test(data)) suffix += 1
-      if (new RegExp(enumSuffixName.upperKebabCase).test(data)) suffix += 1
-      if (new RegExp(enumSuffixName.upperSnakeCase).test(data)) suffix += 1
+
+      const arrayPrefixes = Object.values(enumPrefixName)
+      const arraySuffixes = Object.values(enumSuffixName)
+
+      isPrefix = this.getNumberMatchesString(arrayPrefixes, data) > 0
+      isSuffix = this.getNumberMatchesString(arraySuffixes, data) > 0
     })
 
-    return { isPrefix: prefix > 0, isSuffix: suffix > 0 }
+    return { isPrefix, isSuffix }
   }
 
   public async generate() {
