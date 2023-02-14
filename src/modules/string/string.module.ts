@@ -49,4 +49,36 @@ export class ModuleString {
 
     return `${firstWord}${otherWord.join('')}`
   }
+
+  private isFirstLetterUpperCase(stringInAnyCase: string): boolean {
+    return stringInAnyCase.charAt(0).toUpperCase() === stringInAnyCase.charAt(0)
+  }
+
+  private isFirstLetterLowerCase(stringInAnyCase: string): boolean {
+    return stringInAnyCase.charAt(0).toLowerCase() === stringInAnyCase.charAt(0)
+  }
+
+  private isStringContainsDash(stringInAnyCase: string): boolean {
+    return stringInAnyCase.search(/-/g) > 0
+  }
+
+  private isStringContainsUnderlining(stringInAnyCase: string): boolean {
+    return stringInAnyCase.search(/_/g) > 0
+  }
+
+  private isStringUpperCase(stringInAnyCase: string): boolean {
+    return stringInAnyCase.toUpperCase() === stringInAnyCase
+  }
+
+  private isStringLowerCase(stringInAnyCase: string): boolean {
+    return stringInAnyCase.toLowerCase() === stringInAnyCase
+  }
+
+  public isCamelCase(stringInAnyCase: string): boolean {
+    if (this.isFirstLetterUpperCase(stringInAnyCase)) return false
+    if (this.isStringContainsDash(stringInAnyCase)) return false
+    if (this.isStringContainsUnderlining(stringInAnyCase)) return false
+    if (this.isStringUpperCase(stringInAnyCase)) return false
+    return true
+  }
 }
