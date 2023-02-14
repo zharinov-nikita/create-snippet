@@ -4,7 +4,7 @@ import nodePath from 'path'
 import { prompt } from 'prompts'
 import recursiveReadDir from 'recursive-readdir'
 import { CONSTANTS } from '../../constants'
-import { enumPrefixName, enumSnippetName, enumSuffixName } from '../../enums'
+import { enumPrefixName, enumSnippetName, enumSnippetVariable, enumSuffixName } from '../../enums'
 import type { TypeCase, TypeStringConversionMethod } from '../../types'
 import { ModuleConfig } from '../config'
 import { ModulePath } from '../path'
@@ -69,14 +69,13 @@ export class ModuleSnippet {
         name: 'prefix',
         message: 'Pick a prefix (specify a string in the kebab-case format)',
       },
-
-      {
-        type: async (_: any, values: TypeOptionsSnippetGeneration) => {
-          return (await this.check(values.snippetName)).isSuffix ? 'text' : null
-        },
-        name: 'suffix',
-        message: 'Pick a suffix (specify a string in the kebab-case format)',
-      },
+      ...(await this.getSnippetVariables(this.options.snippetName)).map((item) => {
+        return {
+          type: 'text',
+          name: item,
+          message: `Pick a ${item} (specify a string in the kebab-case format)`,
+        }
+      }),
     ]
 
     const questions = await data()
@@ -143,6 +142,29 @@ export class ModuleSnippet {
     })
 
     return { isPrefix, isSuffix }
+  }
+
+  public async getSnippetVariables(pathToSnippet: string): Promise<string[]> {
+    function createRegExp(): RegExp[] {
+      return Object.values(enumSnippetVariable).map((item) => new RegExp(`${item}\\d+`, 'g'))
+    }
+
+    const myPaths = await recursiveReadDir(nodePath.join(...[this.rootDirConfig, pathToSnippet]))
+
+    let snippetVariables: string[] = []
+
+    myPaths.forEach((item) => {
+      const data = JSON.stringify(fs.readFileSync(item, 'utf-8'))
+
+      snippetVariables = [
+        ...(createRegExp()
+          .map((item) => data.match(item))
+          .flat(Infinity)
+          .filter((item) => typeof item === 'string') as []),
+      ]
+    })
+
+    return snippetVariables
   }
 
   public async generate() {
