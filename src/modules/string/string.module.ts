@@ -112,4 +112,12 @@ export class ModuleString {
     }
     return false
   }
+
+  public isUpperKebabCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
+    if (this.isStringUpperCase(stringInAnyCase) && this.isStringContainsDash(stringInAnyCase)) {
+      return true
+    }
+    return false
+  }
 }
