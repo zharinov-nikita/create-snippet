@@ -120,4 +120,12 @@ export class ModuleString {
     }
     return false
   }
+
+  public isLowerKebabCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
+    if (this.isStringLowerCase(stringInAnyCase) && this.isStringContainsDash(stringInAnyCase)) {
+      return true
+    }
+    return false
+  }
 }
