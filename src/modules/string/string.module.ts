@@ -104,4 +104,12 @@ export class ModuleString {
     }
     return false
   }
+
+  public isLowerSnakeCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
+    if (this.isStringLowerCase(stringInAnyCase) && this.isStringContainsUnderlining(stringInAnyCase)) {
+      return true
+    }
+    return false
+  }
 }
