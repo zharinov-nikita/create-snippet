@@ -69,13 +69,6 @@ export class ModuleSnippet {
         name: 'prefix',
         message: 'Pick a prefix (specify a string in the kebab-case format)',
       },
-      ...(await this.getSnippetVariables(this.options.snippetName)).map((item) => {
-        return {
-          type: 'text',
-          name: item,
-          message: `Pick a ${item} (specify a string in the kebab-case format)`,
-        }
-      }),
     ]
 
     const questions = await data()

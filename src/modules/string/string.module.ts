@@ -1,3 +1,5 @@
+import { TypeStringCase } from '../../types'
+
 export class ModuleString {
   public toCamelCase(stringInAnyCase: string): string {
     if (stringInAnyCase.length === 0) return ''
@@ -55,6 +57,16 @@ export class ModuleString {
     return `${firstWord}${otherWord.join('')}`
   }
 
+  public toLowerCase(stringInAnyCase: string): string {
+    if (stringInAnyCase.length === 0) return ''
+    return stringInAnyCase.toLowerCase()
+  }
+
+  public toUpperCase(stringInAnyCase: string): string {
+    if (stringInAnyCase.length === 0) return ''
+    return stringInAnyCase.toUpperCase()
+  }
+
   private isFirstLetterUpperCase(stringInAnyCase: string): boolean {
     if (stringInAnyCase.length === 0) return false
     return stringInAnyCase.charAt(0).toUpperCase() === stringInAnyCase.charAt(0)
@@ -83,6 +95,14 @@ export class ModuleString {
   private isStringLowerCase(stringInAnyCase: string): boolean {
     if (stringInAnyCase.length === 0) return false
     return stringInAnyCase.toLowerCase() === stringInAnyCase
+  }
+
+  public isLowerCase(stringInAnyCase: string): boolean {
+    return stringInAnyCase.toLowerCase() === stringInAnyCase
+  }
+
+  public isUpperCase(stringInAnyCase: string): boolean {
+    return stringInAnyCase.toUpperCase() === stringInAnyCase
   }
 
   public isCamelCase(stringInAnyCase: string): boolean {
@@ -172,5 +192,17 @@ export class ModuleString {
     }
 
     return stringInAnyCase
+  }
+
+  public defineCase(stringInAnyCase: string): TypeStringCase {
+    if (this.isCamelCase(stringInAnyCase)) return 'camelCase'
+    if (this.isPascalCase(stringInAnyCase)) return 'pascalCase'
+    if (this.isUpperSnakeCase(stringInAnyCase)) return 'upperSnakeCase'
+    if (this.isLowerSnakeCase(stringInAnyCase)) return 'lowerSnakeCase'
+    if (this.isUpperKebabCase(stringInAnyCase)) return 'upperKebabCase'
+    if (this.isLowerKebabCase(stringInAnyCase)) return 'lowerKebabCase'
+    if (this.isUpperCase(stringInAnyCase)) return 'upperCase'
+    if (this.isLowerCase(stringInAnyCase)) return 'lowerCase'
+    return 'lowerCase'
   }
 }
