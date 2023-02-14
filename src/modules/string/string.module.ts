@@ -1,6 +1,7 @@
 export class ModuleString {
-  public toCamelCase(stringInKebabCase: string): string {
-    if (stringInKebabCase.length === 0) return ''
+  public toCamelCase(stringInAnyCase: string): string {
+    if (stringInAnyCase.length === 0) return ''
+    const stringInKebabCase = this.anyCaseToKebabCase(stringInAnyCase)
     const array = stringInKebabCase.split('-')
     const firstWord = array[0]
     const otherWord = array.map((item, index) => {
@@ -12,32 +13,37 @@ export class ModuleString {
     return `${firstWord}${otherWord.join('')}`
   }
 
-  public toUpperSnakeCase(stringInKebabCase: string): string {
-    if (stringInKebabCase.length === 0) return ''
+  public toUpperSnakeCase(stringInAnyCase: string): string {
+    if (stringInAnyCase.length === 0) return ''
+    const stringInKebabCase = this.anyCaseToKebabCase(stringInAnyCase)
     const array = stringInKebabCase.split('-')
     const string = array.map((item) => item.toUpperCase())
     return string.join('_')
   }
 
-  public toLowerSnakeCase(stringInKebabCase: string): string {
-    if (stringInKebabCase.length === 0) return ''
+  public toLowerSnakeCase(stringInAnyCase: string): string {
+    if (stringInAnyCase.length === 0) return ''
+    const stringInKebabCase = this.anyCaseToKebabCase(stringInAnyCase)
     const array = stringInKebabCase.split('-')
     const string = array.map((item) => item.toLowerCase())
     return string.join('_')
   }
 
-  public toUpperKebabCase(stringInKebabCase: string): string {
-    if (stringInKebabCase.length === 0) return ''
+  public toUpperKebabCase(stringInAnyCase: string): string {
+    if (stringInAnyCase.length === 0) return ''
+    const stringInKebabCase = this.anyCaseToKebabCase(stringInAnyCase)
     return stringInKebabCase.toUpperCase()
   }
 
-  public toLowerKebabCase(stringInKebabCase: string): string {
-    if (stringInKebabCase.length === 0) return ''
+  public toLowerKebabCase(stringInAnyCase: string): string {
+    if (stringInAnyCase.length === 0) return ''
+    const stringInKebabCase = this.anyCaseToKebabCase(stringInAnyCase)
     return stringInKebabCase.toLowerCase()
   }
 
-  public toPascalCase(stringInKebabCase: string): string {
-    if (stringInKebabCase.length === 0) return ''
+  public toPascalCase(stringInAnyCase: string): string {
+    if (stringInAnyCase.length === 0) return ''
+    const stringInKebabCase = this.anyCaseToKebabCase(stringInAnyCase)
     const array = stringInKebabCase.split('-')
     const firstWord = `${array[0][0].toUpperCase()}${array[0].substring(1)}`
     const otherWord = array.map((item, index) => {
@@ -127,5 +133,44 @@ export class ModuleString {
       return true
     }
     return false
+  }
+
+  private anyCaseToKebabCase(stringInAnyCase: string): string {
+    if (stringInAnyCase.length === 0) {
+      return stringInAnyCase
+    }
+    if (this.isCamelCase(stringInAnyCase)) {
+      return stringInAnyCase
+        .split(/(?=[A-Z])/)
+        .map((item) => item.toLowerCase())
+        .toString()
+        .replaceAll(',', '-')
+    }
+    if (this.isLowerKebabCase(stringInAnyCase)) {
+      return stringInAnyCase
+    }
+    if (this.isLowerSnakeCase(stringInAnyCase)) {
+      return stringInAnyCase.replaceAll('_', '-')
+    }
+    if (this.isPascalCase(stringInAnyCase)) {
+      return (
+        stringInAnyCase.charAt(0).toLowerCase() +
+        stringInAnyCase
+          .slice(1)
+          .split(/(?=[A-Z])/)
+          .map((item) => item.toLowerCase())
+          .toString()
+          .replaceAll(',', '-')
+      )
+    }
+    if (this.isUpperKebabCase(stringInAnyCase)) {
+      return stringInAnyCase.toLowerCase()
+    }
+
+    if (this.isUpperSnakeCase(stringInAnyCase)) {
+      return stringInAnyCase.replaceAll('_', '-').toLowerCase()
+    }
+
+    return stringInAnyCase
   }
 }
