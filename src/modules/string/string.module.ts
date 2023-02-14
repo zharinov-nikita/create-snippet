@@ -1,7 +1,6 @@
 export class ModuleString {
   public toCamelCase(stringInKebabCase: string): string {
     if (stringInKebabCase.length === 0) return ''
-
     const array = stringInKebabCase.split('-')
     const firstWord = array[0]
     const otherWord = array.map((item, index) => {
@@ -51,30 +50,37 @@ export class ModuleString {
   }
 
   private isFirstLetterUpperCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
     return stringInAnyCase.charAt(0).toUpperCase() === stringInAnyCase.charAt(0)
   }
 
   private isFirstLetterLowerCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
     return stringInAnyCase.charAt(0).toLowerCase() === stringInAnyCase.charAt(0)
   }
 
   private isStringContainsDash(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
     return stringInAnyCase.search(/-/g) > 0
   }
 
   private isStringContainsUnderlining(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
     return stringInAnyCase.search(/_/g) > 0
   }
 
   private isStringUpperCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
     return stringInAnyCase.toUpperCase() === stringInAnyCase
   }
 
   private isStringLowerCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
     return stringInAnyCase.toLowerCase() === stringInAnyCase
   }
 
   public isCamelCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
     if (this.isFirstLetterUpperCase(stringInAnyCase)) return false
     if (this.isStringContainsDash(stringInAnyCase)) return false
     if (this.isStringContainsUnderlining(stringInAnyCase)) return false
@@ -83,10 +89,19 @@ export class ModuleString {
   }
 
   public isPascalCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
     if (this.isFirstLetterLowerCase(stringInAnyCase)) return false
     if (this.isStringContainsDash(stringInAnyCase)) return false
     if (this.isStringContainsUnderlining(stringInAnyCase)) return false
     if (this.isStringUpperCase(stringInAnyCase)) return false
     return true
+  }
+
+  public isUpperSnakeCase(stringInAnyCase: string): boolean {
+    if (stringInAnyCase.length === 0) return false
+    if (this.isStringUpperCase(stringInAnyCase) && this.isStringContainsUnderlining(stringInAnyCase)) {
+      return true
+    }
+    return false
   }
 }
