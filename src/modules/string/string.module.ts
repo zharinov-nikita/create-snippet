@@ -81,4 +81,12 @@ export class ModuleString {
     if (this.isStringUpperCase(stringInAnyCase)) return false
     return true
   }
+
+  public isPascalCase(stringInAnyCase: string): boolean {
+    if (this.isFirstLetterLowerCase(stringInAnyCase)) return false
+    if (this.isStringContainsDash(stringInAnyCase)) return false
+    if (this.isStringContainsUnderlining(stringInAnyCase)) return false
+    if (this.isStringUpperCase(stringInAnyCase)) return false
+    return true
+  }
 }
