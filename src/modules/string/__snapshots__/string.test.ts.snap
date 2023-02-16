@@ -1,13 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`module/string snapshot: HELLO_WORLD 1`] = `"HELLO_WORLD"`;
+exports[`module/string snapshot 1`] = `"snippetName"`;
 
-exports[`module/string snapshot: HELLO-WORLD 1`] = `"HELLO-WORLD"`;
+exports[`module/string snapshot 2`] = `"snippet-name"`;
 
-exports[`module/string snapshot: HelloWorld 1`] = `"HelloWorld"`;
+exports[`module/string snapshot 3`] = `"snippet_name"`;
 
-exports[`module/string snapshot: hello_world 1`] = `"hello_world"`;
+exports[`module/string snapshot 4`] = `"SnippetName"`;
 
-exports[`module/string snapshot: hello-world 1`] = `"hello-world"`;
+exports[`module/string snapshot 5`] = `"SNIPPET-NAME"`;
 
-exports[`module/string snapshot: helloWorld 1`] = `"helloWorld"`;
+exports[`module/string snapshot 6`] = `"SNIPPET_NAME"`;
+
+exports[`module/string snapshot 7`] = `true`;
+
+exports[`module/string snapshot 8`] = `false`;
+
+exports[`module/string snapshot 9`] = `false`;
+
+exports[`module/string snapshot 10`] = `false`;
+
+exports[`module/string snapshot 11`] = `false`;
+
+exports[`module/string snapshot 12`] = `false`;
+
+exports[`module/string snapshot 13`] = `false`;
+
+exports[`module/string snapshot 14`] = `true`;
+
+exports[`module/string snapshot 15`] = `false`;
+
+exports[`module/string snapshot 16`] = `false`;
+
+exports[`module/string snapshot 17`] = `false`;
+
+exports[`module/string snapshot 18`] = `false`;
+
+exports[`module/string snapshot 19`] = `false`;
+
+exports[`module/string snapshot 20`] = `false`;
+
+exports[`module/string snapshot 21`] = `true`;
+
+exports[`module/string snapshot 22`] = `false`;
+
+exports[`module/string snapshot 23`] = `false`;
+
+exports[`module/string snapshot 24`] = `false`;
+
+exports[`module/string snapshot 25`] = `false`;
+
+exports[`module/string snapshot 26`] = `false`;
+
+exports[`module/string snapshot 27`] = `false`;
+
+exports[`module/string snapshot 28`] = `true`;
+
+exports[`module/string snapshot 29`] = `false`;
+
+exports[`module/string snapshot 30`] = `false`;
+
+exports[`module/string snapshot 31`] = `false`;
+
+exports[`module/string snapshot 32`] = `false`;
+
+exports[`module/string snapshot 33`] = `false`;
+
+exports[`module/string snapshot 34`] = `false`;
+
+exports[`module/string snapshot 35`] = `true`;
+
+exports[`module/string snapshot 36`] = `false`;
+
+exports[`module/string snapshot 37`] = `false`;
+
+exports[`module/string snapshot 38`] = `false`;
+
+exports[`module/string snapshot 39`] = `false`;
+
+exports[`module/string snapshot 40`] = `false`;
+
+exports[`module/string snapshot 41`] = `false`;
+
+exports[`module/string snapshot 42`] = `true`;
