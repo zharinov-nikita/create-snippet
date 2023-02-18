@@ -9,7 +9,7 @@
     "automating-code-creation",
     "code-generation"
   ],
-  "version": "1.3.9",
+  "version": "1.3.10",
   "license": "ISC",
   "bin": {
     "create-snippet": "./dist/bin/index.js"

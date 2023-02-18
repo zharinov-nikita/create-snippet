@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
 import { CONSTANTS } from '../../constants'
-import { enumPrefixName, enumSnippetName, enumSuffixName } from '../../enums'
+import { enumPrefixName, enumSnippetName, enumSuffixName, enumSymbol } from '../../enums'
 import { TypeCase, TypeConfig } from '../../types'
 import { InterfaceConfig } from './config.interface'
 
@@ -71,7 +71,9 @@ ${objectToString(enumSnippetName)}
     })
 
     // eslint-disable-next-line no-console
-    console.log(`${chalk.green(`√`)} ${chalk.gray(`the project has been successfully initialized`)}`)
+    console.log(
+      `${chalk.green(enumSymbol.check)} ${chalk.gray(`the project has been successfully initialized`)}`
+    )
   }
 
   public get() {
