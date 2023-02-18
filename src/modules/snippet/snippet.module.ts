@@ -4,7 +4,7 @@ import nodePath from 'path'
 import { prompt } from 'prompts'
 import recursiveReadDir from 'recursive-readdir'
 import { CONSTANTS } from '../../constants'
-import { enumPrefixName, enumSnippetName, enumSnippetVariable, enumSuffixName } from '../../enums'
+import { enumPrefixName, enumSnippetName, enumSnippetVariable, enumSuffixName, enumSymbol } from '../../enums'
 import type { TypeCase, TypeStringConversionMethod } from '../../types'
 import { ModuleConfig } from '../config'
 import { ModulePath } from '../path'
@@ -177,17 +177,25 @@ export class ModuleSnippet {
       paths.forEach((pathToSnippet) => {
         const data = this.formatSnippet(pathToSnippet)
         const myPath = this.modulePath.generate({ config, name, path, pathToSnippet })
-        if (this.isSnippet(myPath.pathWriteSnippetFile)) throw new Error('isSnippet')
-        if (this.isSnippet(myPath.pathFlatWriteSnippetFile)) throw new Error('isSnippet')
-        fs.mkdirSync(this.options.isFlat ? myPath.pathFlatSnippetFile : myPath.pathSnippetFile, {
-          recursive: true,
-        })
-        fs.writeFileSync(
-          this.options.isFlat ? myPath.pathFlatWriteSnippetFile : myPath.pathWriteSnippetFile,
-          data
-        )
-        // eslint-disable-next-line no-console
-        console.log(`${chalk.green(`√`)} ${chalk.gray(myPath.snippetFileName)}`)
+        const pathSnippetFile = this.options.isFlat ? myPath.pathFlatSnippetFile : myPath.pathSnippetFile
+        const pathWriteSnippetFile = this.options.isFlat
+          ? myPath.pathFlatWriteSnippetFile
+          : myPath.pathWriteSnippetFile
+        if (this.isSnippet(pathWriteSnippetFile)) {
+          // eslint-disable-next-line no-console
+          console.log(
+            `${chalk.red(enumSymbol.cross)} ${chalk.gray(
+              `The files ${myPath.snippetFileName} on the path ${pathWriteSnippetFile} already exist`
+            )}`
+          )
+        } else {
+          fs.mkdirSync(pathSnippetFile, {
+            recursive: true,
+          })
+          fs.writeFileSync(pathWriteSnippetFile, data)
+          // eslint-disable-next-line no-console
+          console.log(`${chalk.green(enumSymbol.check)} ${chalk.gray(myPath.snippetFileName)}`)
+        }
       })
     })
   }
