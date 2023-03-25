@@ -107,10 +107,10 @@ ${objectToString(enumSnippetName)}
             `
 Documentation
 
-npx create-snippet --help will show hints
-npx create-snippet --init initializes the project
-npx create-snippet --generate generates a new snippet
-npx create-snippet --clear-cache clear cache
+npx create-snippet --help or -h will show hints
+npx create-snippet --init or -i initializes the project
+npx create-snippet --generate or -g generates a new snippet
+npx create-snippet --clear-cache or -cc clear cache
 
 New snippet
 
