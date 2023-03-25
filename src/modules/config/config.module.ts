@@ -110,6 +110,7 @@ Documentation
 npx create-snippet --help will show hints
 npx create-snippet --init initializes the project
 npx create-snippet --generate generates a new snippet
+npx create-snippet --clear-cache clear cache
 
 New snippet
 
