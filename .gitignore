@@ -4,3 +4,4 @@ dist
 cli.json
 .code-snippet
 .create-snippet
+/cache

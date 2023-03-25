@@ -1,7 +1,7 @@
 export type TypeStringConversionMethod =
-  | 'toCamelCase'
-  | 'toUpperSnakeCase'
-  | 'toLowerSnakeCase'
-  | 'toUpperKebabCase'
-  | 'toLowerKebabCase'
-  | 'toPascalCase'
+    | 'toCamelCase'
+    | 'toUpperSnakeCase'
+    | 'toLowerSnakeCase'
+    | 'toUpperKebabCase'
+    | 'toLowerKebabCase'
+    | 'toPascalCase'
