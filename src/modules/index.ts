@@ -1,4 +1,5 @@
 export * from './argv'
+export * from './cache'
 export * from './config'
 export * from './path'
 export * from './snippet'

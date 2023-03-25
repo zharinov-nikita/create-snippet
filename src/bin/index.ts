@@ -3,9 +3,29 @@ import fs from 'fs'
 import path from 'path'
 import { ModuleArgv } from '../modules'
 const moduleArgv = new ModuleArgv()
-const args = moduleArgv.getNotFormatted()
+const arg = moduleArgv.getNotFormatted()[0]
 const paths = fs.readdirSync(path.join(__dirname, '..', 'scripts'))
-const scripts = [...paths.map((script) => `--${script.split('.script')[0]}`)]
-const arg = args.filter((arg) => scripts.includes(arg))[0]
-if (typeof arg !== 'string') throw new Error('No script')
-require(`../scripts/${arg.replace('--', '')}.script`)
+
+function createTeamNamesFromFile(str: string) {
+    const [filename] = str.split('.')
+    const firstLetters = filename
+        .split('-')
+        .map((word) => word[0])
+        .join('')
+    const hyphenated = `--${filename}`
+    const short = `-${firstLetters}`
+    return { [hyphenated]: str, [short]: str }
+}
+
+const arrayCommands = paths.map((path) => ({
+    ...createTeamNamesFromFile(path),
+}))
+
+const commands = arrayCommands.reduce((flat, command) => {
+    return { ...flat, ...command }
+}, {})
+
+const command = commands[arg]
+
+if (typeof command === 'undefined') throw new Error('No script')
+require(`../scripts/${commands[arg]}`)

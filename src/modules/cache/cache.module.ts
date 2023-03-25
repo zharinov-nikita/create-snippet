@@ -1,5 +1,7 @@
+import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
+import { enumSymbol } from '../../enums'
 
 export class ModuleCache {
     private cacheDir: string
@@ -44,5 +46,17 @@ export class ModuleCache {
     private getFilePath(key: string): string {
         const fileName = `${key}.json`
         return path.join(this.cacheDir, fileName)
+    }
+
+    public clear(): void {
+        fs.readdirSync(this.cacheDir).forEach((file) => {
+            fs.unlinkSync(path.join(this.cacheDir, file))
+        })
+        // eslint-disable-next-line no-console
+        console.log(
+            `${chalk.green(enumSymbol.check)} ${chalk.gray(
+                `Cache cleared successfully!`
+            )}`
+        )
     }
 }
