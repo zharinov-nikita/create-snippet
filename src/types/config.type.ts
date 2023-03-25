@@ -1,4 +1,4 @@
 export interface TypeConfig {
-  snippetName: string
-  pathToSnippet: string
+    snippetName: string
+    pathToSnippet: string
 }

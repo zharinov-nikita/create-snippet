@@ -1,4 +1,4 @@
 export const enumSymbol = {
-  check: '√',
-  cross: 'x',
+    check: '√',
+    cross: 'x',
 }
