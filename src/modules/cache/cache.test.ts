@@ -12,7 +12,7 @@ import path from 'path'
 import { ModuleCache } from './cache.module'
 
 describe('ModuleCache', () => {
-    const cacheDir = 'cache'
+    const cacheDir = path.join(__dirname, '..', '..', '__cache__')
     let cache: ModuleCache
 
     beforeAll(() => {

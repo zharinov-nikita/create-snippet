@@ -5,7 +5,7 @@ export class ModuleCache {
     private cacheDir: string
 
     constructor() {
-        this.cacheDir = 'cache'
+        this.cacheDir = path.join(__dirname, '..', '..', '__cache__')
         if (!fs.existsSync(this.cacheDir)) {
             fs.mkdirSync(this.cacheDir)
         }
