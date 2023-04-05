@@ -9,9 +9,10 @@ To install the `create-snippet` package, run the command:
 
 #### Basic commands
 
-1) `npx create-snippet --help` will show hints
-2) `npx create-snippet --init` initializes the project
-3) `npx create-snippet --generate` generates a new snippet
+1) `npx create-snippet --help or -h` will show hints
+2) `npx create-snippet --init or -i` initializes the project
+3) `npx create-snippet --generate or -g` generates a new snippet
+3) `npx create-snippet --clear-cache  or -cc` clear cache
 
 #### New snippet
 

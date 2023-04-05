@@ -99,7 +99,7 @@ export class ModuleSnippet {
                 name: 'suffix',
                 message: 'Pick a suffix',
                 initial: (_: any, values: TypeOptionsSnippetGeneration) =>
-                    this.moduleCache.get(`${values.snippetName}-prefix`),
+                    this.moduleCache.get(`${values.snippetName}-suffix`),
             },
         ]
 
